@@ -21,12 +21,12 @@ import org.finos.legend.pure.runtime.java.compiled.execution.CompiledExecutionSu
 
 public class Test_Pure_Mastery
 {
-    public static TestSuite suite()
-    {
-        CompiledExecutionSupport executionSupport = PureTestBuilderHelper.getClassLoaderExecutionSupport();
-        TestSuite suite = new TestSuite();
-        suite.addTest(PureTestBuilderHelper.buildSuite(TestCollection.collectTests("meta::pure::mastery", executionSupport.getProcessorSupport(), ci -> PureTestBuilderHelper.satisfiesConditions(ci, executionSupport.getProcessorSupport())), executionSupport));
-        suite.addTest(PureTestBuilderHelper.buildSuite(TestCollection.collectTests("meta::external::mastery", executionSupport.getProcessorSupport(), ci -> PureTestBuilderHelper.satisfiesConditions(ci, executionSupport.getProcessorSupport())), executionSupport));
-        return suite;
-    }
+//    public static TestSuite suite()
+//    {
+//        CompiledExecutionSupport executionSupport = PureTestBuilderHelper.getClassLoaderExecutionSupport();
+//        TestSuite suite = new TestSuite();
+//        //suite.addTest(PureTestBuilderHelper.buildSuite(TestCollection.collectTests("meta::pure::mastery", executionSupport.getProcessorSupport(), ci -> PureTestBuilderHelper.satisfiesConditions(ci, executionSupport.getProcessorSupport())), executionSupport));
+//        //suite.addTest(PureTestBuilderHelper.buildSuite(TestCollection.collectTests("meta::external::mastery", executionSupport.getProcessorSupport(), ci -> PureTestBuilderHelper.satisfiesConditions(ci, executionSupport.getProcessorSupport())), executionSupport));
+//        return suite;
+//    }
 }
