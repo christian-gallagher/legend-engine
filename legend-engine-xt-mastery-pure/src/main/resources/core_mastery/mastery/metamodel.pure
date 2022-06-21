@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-Class {doc.doc = 'Defines a Master Record and all configuration requiured for managing it in a mastering platform.'} meta::pure::mastery::metamodel::MasterRecordDefinition
+Class {doc.doc = 'Defines a Master Record and all configuration required for managing it in a mastering platform.'} meta::pure::mastery::metamodel::MasterRecordDefinition
 {
   {doc.doc = 'The name used to identify this master record that is unique within the parent Dataspace|Datastore.'} uniqueName : String[1];
   {doc.doc = 'The class that is managed in this Master Record. (For Alloy Mastery this must extend MasterRecord.)'} model : meta::pure::metamodel::type::Class<Any>[1];
   {doc.doc = 'The identity resolution configuration used to identify a record in the master store using the inputs provided, the inputs usually do not contain the primary key'} identityResolution : meta::pure::mastery::metamodel::resolution::IdentityResolution[1];
 }
 
-Enum {doc.doc = 'A control used to define how to valiudate the queries generated and how to validate the the results of executing the queries.'}
+Enum {doc.doc = 'A control used to define how to validate the queries generated and how to validate the the results of executing the queries.'}
 meta::pure::mastery::metamodel::resolution::ResolutionControl
 {
-  {doc.doc = 'Optional field but if poresent in the input data it must produce a single match, effectively a primary key.'} MandatoryOnResultIfProvided,
+  {doc.doc = 'Optional field but if present in the input data it must produce a single match, effectively a primary key.'} MandatoryOnResultIfProvided,
   {doc.doc = 'A required field on the input but if matched it indicates that a duplicate is about to be created, typically used in record creation use cases from a UI.'} MandatoryAndDuplicateIfMatched,
   {doc.doc = 'For the set of fields with this control at least one of the fields must be present on the input.'} AtLeastOneMandatoryInGroup,
   {doc.doc = 'Optional field that may or may not produce a match.'} Optional
@@ -41,5 +41,5 @@ meta::pure::mastery::metamodel::resolution::ResolutionQuery
   {doc.doc='Expressions that refer to attributes used to generate queries that are executed on the master store.'} queries : meta::pure::metamodel::function::FunctionDefinition<Any>[1..*];
   {doc.doc='The control type used to define how to validate the queries generated from the input and validate the results of query execution.'} control : meta::pure::mastery::metamodel::resolution::ResolutionControl[1];
   {doc.doc='The query precedence applied when there are more than 1 ResoultionQuery definitions on an IdentityResolution.'} precedence : Integer[1];
-  {doc.doc='Inidicate that the queries provided are the primary key - and only the primary key.'} isPrimaryKey : Boolean [0..1];
+  {doc.doc='Indicate that the queries provided are the primary key - and only the primary key.'} isPrimaryKey : Boolean [0..1];
 }
