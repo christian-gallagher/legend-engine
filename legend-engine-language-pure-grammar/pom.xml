@@ -55,7 +55,7 @@
                                 <resource>
                                     <directory>
                                         src/main/antlr4/org/finos/legend/engine/language/pure/grammar/from/antlr4/core
-                                    </directory>“
+                                    </directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
