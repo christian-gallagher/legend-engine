@@ -74,8 +74,8 @@ public class ParserErrorListener extends BaseErrorListener
                         charPositionInLine + 1 + (line == 1 ? this.walkerSourceInformation.getColumnOffset() : 0) + ((Token) offendingSymbol).getStopIndex() - ((Token) offendingSymbol).getStartIndex());
                 // NOTE: for some reason sometimes ANTLR report the end index of the token to be smaller than the start index so we must reprocess it here
                 sourceInformation.startColumn = Math.min(sourceInformation.endColumn, sourceInformation.startColumn);
-                msg = "Unexpected token";
-                throw new EngineException(msg, sourceInformation, EngineErrorType.PARSER);
+                String msg2 = "Unexpected token:\"" + offendingSymbol + "\" msg:" + msg;
+                throw new EngineException(msg2, sourceInformation, EngineErrorType.PARSER);
             }
             SourceInformation sourceInformation = new SourceInformation(
                     this.walkerSourceInformation.getSourceId(),
@@ -83,7 +83,9 @@ public class ParserErrorListener extends BaseErrorListener
                     charPositionInLine + 1 + (line == 1 ? this.walkerSourceInformation.getColumnOffset() : 0),
                     line + this.walkerSourceInformation.getLineOffset(),
                     charPositionInLine + 1 + (line == 1 ? this.walkerSourceInformation.getColumnOffset() : 0));
-            throw new EngineException(msg, sourceInformation, EngineErrorType.PARSER);
+                    String msg2 = "Unexpected token:\"" + offendingSymbol + "\" msg:" + msg;
+
+            throw new EngineException(msg2, sourceInformation, EngineErrorType.PARSER);
         }
         Token offendingToken = e.getOffendingToken();
         SourceInformation sourceInformation = new SourceInformation(
@@ -92,7 +94,8 @@ public class ParserErrorListener extends BaseErrorListener
                 charPositionInLine + 1 + (line == 1 ? this.walkerSourceInformation.getColumnOffset() : 0),
                 offendingToken.getLine() + this.walkerSourceInformation.getLineOffset(),
                 charPositionInLine + offendingToken.getText().length() + (line == 1 ? this.walkerSourceInformation.getColumnOffset() : 0));
-        throw new EngineException(msg, sourceInformation, EngineErrorType.PARSER);
+                 String msg2 = "Unexpected token:\"" + offendingSymbol + "\" msg:" + msg;
+        throw new EngineException(msg2, sourceInformation, EngineErrorType.PARSER);
     }
 
     protected List<String> dereferenceTokens(List<Integer> expectedTokens)

@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 public class PureGrammarParserUtility
 {
     private static final String PACKAGE_SEPARATOR = "::";
+
     private static final Pattern VALID_STRING_PATTERN = Pattern.compile("[A-Za-z0-9_][A-Za-z0-9_$]*");
 
     /**

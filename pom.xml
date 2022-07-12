@@ -42,6 +42,8 @@
         <module>legend-engine-xt-graphQL-query</module>
         <module>legend-engine-xt-graphQL-pure</module>
 
+        <module>legend-engine-xt-mastery-grammar</module>
+        <module>legend-engine-xt-mastery-protocol</module>
         <module>legend-engine-xt-mastery-pure</module>
 
         <module>legend-engine-xt-protobuf-grammar</module>
@@ -637,7 +639,16 @@
                 <artifactId>legend-engine-xt-graphQL-pure</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.finos.legend.engine</groupId>
+                <artifactId>legend-engine-xt-mastery-protocol</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.finos.legend.engine</groupId>
+                <artifactId>legend-engine-xt-mastery-grammar</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.finos.legend.engine</groupId>
                 <artifactId>legend-engine-xt-mastery-pure</artifactId>
