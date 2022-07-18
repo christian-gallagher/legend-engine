@@ -16,6 +16,7 @@ package org.finos.legend.engine.language.pure.dsl.mastery.grammar.test;
 
 import org.antlr.v4.runtime.Vocabulary;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
+import org.finos.legend.engine.language.pure.dsl.mastery.compiler.test.TestMasteryCompilationFromGrammar;
 import org.finos.legend.engine.language.pure.grammar.from.antlr4.MasteryParserGrammar;
 import org.finos.legend.engine.language.pure.grammar.test.TestGrammarParser;
 import org.junit.Test;
@@ -30,52 +31,12 @@ public class TestMasteryGrammarParser extends TestGrammarParser.TestGrammarParse
         return MasteryParserGrammar.VOCABULARY;
     }
 
-    /*
-     *
-     * ###Mastery
-     * MasterRecordDefinition exampleQualifiedName
-     * {
-     *      model : alloy::mastery::Widget;
-     *      identityResolution : IdentityResolution
-     *      {
-     *          model : alloy::mastery::Widget;
-     *      }
-     * }
-     *
-     */
-
-
     @Override
     public String getParserGrammarIdentifierInclusionTestCode(List<String> keywords)
     {
-        String testInput = "###Mastery\n" +
-                "\nMasterRecordDefinition alloy::mastery::WidgetMasterRecord" + "\n" +
-                //"\nMasterRecordDefinition " + ListAdapter.adapt(keywords).makeString("::") + "\n" + //Fails on the use of import
-                "{\n" +
-                "  modelClass: alloy::mastery::Widget;\n" +
-                "  identityResolution : \n" +
-                "  {\n" +
-                "      modelClass: alloy::mastery::Widget;\n" +
-                "      resolutionQueries:\n" +
-                "      [ \n" +
-                "        {\n" +
-                "           queries: [ {widget: test::Widget[1] | test::Widget.all()->filter(input|$widget.widgetId == $input.widgetid)},\n" +
-                "                      {widget: test::Widget[1] | test::Widget.topLevelMilestonedIdentifier.identifierType == test::TopLevelMileStonedSIdentifier.TopLevelIdentifier1},\n" +
-                "                      {widget: test::Widget[1] | $widget.topLevelMilestonedIdentifier.FROM_Z->toOne() <= $EFFECTIVE_DATE} \n" +
-                "                    ];\n" +
-                "           keyType: Optional;\n" +
-                "           precedence: 1;\n" +
-                "         },\n" +
-                "         {\n" +
-                "           queries: [ {wodgit: test::Widget[1] | test::Widget.all()->filter(input|$widget.widgetId == $input.widgetid)} ]; \n" +
-                "           keyType: GeneratedPrimaryKey;\n" +
-                "           precedence: 1;\n" +
-                "         }\n" +
-                "      ]\n" +
-                "   }\n" +
-                "}\n";
-        System.out.println(testInput);
-        return testInput;
+
+        System.out.println(TestMasteryCompilationFromGrammar.COMPLETE_CORRECT_MODEL);
+        return TestMasteryCompilationFromGrammar.COMPLETE_CORRECT_MODEL;
 
 
 //        return "###Persistence\n" +

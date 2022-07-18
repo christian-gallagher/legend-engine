@@ -36,27 +36,61 @@ import static org.junit.Assert.assertTrue;
 public class TestMasteryCompilationFromGrammar extends TestCompilationFromGrammar.TestCompilationFromGrammarTestSuite
 {
 
+    public static String COMPLETE_CORRECT_MODEL = "###Pure\n" +
+            "Class org::dataeng::Widget\n" +
+            "{\n" +
+            "  widgetId: String[0..1];\n" +
+            "  identifiers: org::dataeng::MilestonedIdentifier[*];\n" +
+            "}\n\n" +
+            "Class org::dataeng::MilestonedIdentifier\n" +
+            "{\n" +
+            "  identifierType: String[1];\n" +
+            "  identifier: String[1];\n" +
+            "  FROM_Z: StrictDate[0..1];\n" +
+            "  THRU_Z: StrictDate[0..1];\n" +
+            "}\n\n\n" +
+            "###Mastery\n" + "MasterRecordDefinition alloy::mastery::WidgetMasterRecord" +
+            "\n" +
+            //"\nMasterRecordDefinition " + ListAdapter.adapt(keywords).makeString("::") + "\n" + //Fails on the use of import
+            "{\n" +
+            "  modelClass: org::dataeng::Widget;\n" +
+            "  identityResolution: \n" +
+            "  {\n" +
+            "    modelClass: org::dataeng::Widget;\n"
+            + //Testing picking up a different class.
+            "    resolutionQueries:\n"
+            + "      [\n" +
+            "        {\n" +
+            "          queries: [ {input: org::dataeng::Widget[1]|org::dataeng::Widget.all()->filter(widget|$widget.widgetId == $input.widgetId)}\n" +
+            "                   ];\n" +
+            "          keyType: GeneratedPrimaryKey;\n" +
+            "          precedence: 1;\n" +
+            "        },\n" +
+            "        {\n" +
+            //"          queries: [ {{input: org::dataeng::Widget[1],EFFECTIVE_DATE: StrictDate[1]|org::dataeng::Widget.all()->filter(widget|((($widget.identifiers.identifierType == 'ISIN') && ($input.identifiers->filter(idType|$idType.identifierType == 'ISIN').identifier == $widget.identifiers->filter(idType|$idType.identifierType == 'ISIN').identifier)) && ($widget.identifiers.FROM_Z->toOne() <= $EFFECTIVE_DATE)) && ($widget.identifiers.THRU_Z->toOne() > $EFFECTIVE_DATE))}}" +
+            "          queries: [ {input: org::dataeng::Widget[1],EFFECTIVE_DATE: StrictDate[1]|org::dataeng::Widget.all()->filter(widget|" +
+                                    "((($widget.identifiers.identifierType == 'ISIN') && " +
+                                    "($input.identifiers->filter(idType|$idType.identifierType == 'ISIN').identifier == $widget.identifiers->filter(idType|$idType.identifierType == 'ISIN').identifier)) && " +
+                                    "($widget.identifiers.FROM_Z->toOne() <= $EFFECTIVE_DATE)) && " +
+                                    "($widget.identifiers.THRU_Z->toOne() > $EFFECTIVE_DATE))}\n" +
+            "                   ];\n" +
+            "          keyType: AlternateKey;\n" +
+            "          precedence: 2;\n" +
+            "        }\n" +
+            "      ]\n" +
+            "  }\n" +
+            "}\n";
+
     //Simple test from ### Text
     @Test
     public void flatShape()
     {
-        String textMetaContext = "###Pure\n" + "Class org::dataeng::Airport\n" + "{\n" + "  name: String[1];\n" + "  city: String[1];\n" + "}\n" + "Class org::dataeng::Plane\n" + "{\n" + "  name: String[1];\n" + "  type: String[1];\n" + "}\n" + "\n" + "###Mastery\n" + "MasterRecordDefinition alloy::mastery::WidgetMasterRecord" + "\n" +
-                //"\nMasterRecordDefinition " + ListAdapter.adapt(keywords).makeString("::") + "\n" + //Fails on the use of import
-                "{\n" + "  modelClass: org::dataeng::Airport;\n" + "  identityResolution: \n" + "  {\n" + "    modelClass: org::dataeng::Plane;\n" + //Testing picking up a different class.
-                "    resolutionQueries:\n" + "      [\n" +
-                //TODO gallch reinstate with existing expressions.
-                "        {\n" + "           queries: [ {input:org::dataeng::Plane[1]|org::dataeng::Plane.all()->filter(plane|$plane.name == $input.name)}\n" + "                   ];\n" +
-//                "          queries: [ {widget: test::Widget[1]|test::Widget.all()->filter(input|$widget.widgetId == $input.widgetid)},\n" +
-//                "                     {widget: test::Widget[1]|test::Widget.topLevelMilestonedIdentifier.identifierType == test::TopLevelMileStonedSIdentifier.TopLevelIdentifier1},\n" +
-//                "                     {widget: test::Widget[1]|$widget.topLevelMilestonedIdentifier.FROM_Z->toOne() <= $EFFECTIVE_DATE}\n" +
-//                "                   ];\n" +
-                "          keyType: Optional;\n" + "          precedence: 1;\n" + "        },\n" + "        {\n" + "          queries: [ {plane: org::dataeng::Plane[1]|org::dataeng::Plane.all()->filter(input|'Bob' == 'Bill')}\n" + "                   ];\n" + "          keyType: GeneratedPrimaryKey;\n" + "          precedence: 2;\n" + "        }\n" + "      ]\n" + "  }\n" + "}\n";
-
-
-        Pair<PureModelContextData, PureModel> result = test(textMetaContext);
+        Pair<PureModelContextData, PureModel> result = test(COMPLETE_CORRECT_MODEL);
         PureModel model = result.getTwo();
+
+
         //TODO gallch clean up and log properly...
-        System.out.println("textMetaContext:...\n\n" + textMetaContext);
+        System.out.println("textMetaContext:...\n\n" + COMPLETE_CORRECT_MODEL);
 
         PackageableElement packageableElement = model.getPackageableElement("alloy::mastery::WidgetMasterRecord");
         assertNotNull(packageableElement);
@@ -64,21 +98,21 @@ public class TestMasteryCompilationFromGrammar extends TestCompilationFromGramma
 
         //MasterRecord Definition modelClass
         Root_meta_pure_mastery_metamodel_MasterRecordDefinition masterRecordDefinition = (Root_meta_pure_mastery_metamodel_MasterRecordDefinition) packageableElement;
-        assertEquals("Airport", masterRecordDefinition._modelClass()._name());
+        assertEquals("Widget", masterRecordDefinition._modelClass()._name());
 
         Root_meta_pure_mastery_metamodel_resolution_IdentityResolution idRes = masterRecordDefinition._identityResolution();
         assert (idRes instanceof Root_meta_pure_mastery_metamodel_resolution_IdentityResolution);
-        assertEquals("Plane", idRes._modelClass()._name());
+        assertEquals("Widget", idRes._modelClass()._name());
 
 
         //Queries
         Object[] queriesArray = idRes._queries().toArray();
         assertEquals(1, ((Root_meta_pure_mastery_metamodel_resolution_ResolutionQuery) queriesArray[0])._precedence());
-        assertEquals("Optional", ((Root_meta_pure_mastery_metamodel_resolution_ResolutionQuery) queriesArray[0])._keyType()._name());
+        assertEquals("GeneratedPrimaryKey", ((Root_meta_pure_mastery_metamodel_resolution_ResolutionQuery) queriesArray[0])._keyType()._name());
         assertPureLambdas(((Root_meta_pure_mastery_metamodel_resolution_ResolutionQuery) queriesArray[0])._resolutionQueries().toList());
 
         assertEquals(2, ((Root_meta_pure_mastery_metamodel_resolution_ResolutionQuery) queriesArray[1])._precedence());
-        assertEquals("GeneratedPrimaryKey", ((Root_meta_pure_mastery_metamodel_resolution_ResolutionQuery) queriesArray[1])._keyType()._name());
+        assertEquals("AlternateKey", ((Root_meta_pure_mastery_metamodel_resolution_ResolutionQuery) queriesArray[1])._keyType()._name());
         assertPureLambdas(((Root_meta_pure_mastery_metamodel_resolution_ResolutionQuery) queriesArray[0])._resolutionQueries().toList());
 
         System.out.println("\nmodel\n" + model);

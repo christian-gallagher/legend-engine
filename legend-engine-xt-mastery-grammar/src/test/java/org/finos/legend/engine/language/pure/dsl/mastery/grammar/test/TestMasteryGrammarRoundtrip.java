@@ -14,6 +14,7 @@
 
 package org.finos.legend.engine.language.pure.dsl.mastery.grammar.test;
 
+import org.finos.legend.engine.language.pure.dsl.mastery.compiler.test.TestMasteryCompilationFromGrammar;
 import org.finos.legend.engine.language.pure.grammar.test.TestGrammarRoundtrip;
 import org.junit.Test;
 
@@ -23,35 +24,8 @@ public class TestMasteryGrammarRoundtrip extends TestGrammarRoundtrip.TestGramma
     @Test
     public void masteryFlat()
     {
-        String testInput = "###Mastery\n" +
-                "MasterRecordDefinition alloy::mastery::WidgetMasterRecord" + "\n" +
-                //"\nMasterRecordDefinition " + ListAdapter.adapt(keywords).makeString("::") + "\n" + //Fails on the use of import
-                "{\n" +
-                "  modelClass: alloy::mastery::Widget;\n" +
-                "  identityResolution: \n" +
-                "  {\n" +
-                "    modelClass: alloy::mastery::Widget;\n" +
-                "    resolutionQueries:\n" +
-                "      [\n" +
-                "        {\n" +
-                "          queries: [ {widget: test::Widget[1]|test::Widget.all()->filter(input|$widget.widgetId == $input.widgetid)},\n" +
-                "                     {widget: test::Widget[1]|test::Widget.topLevelMilestonedIdentifier.identifierType == test::TopLevelMileStonedSIdentifier.TopLevelIdentifier1},\n" +
-                "                     {widget: test::Widget[1]|$widget.topLevelMilestonedIdentifier.FROM_Z->toOne() <= $EFFECTIVE_DATE}\n" +
-                "                   ];\n" +
-                "          keyType: Optional;\n" +
-                "          precedence: 1;\n" +
-                "        },\n" +
-                "        {\n" +
-                "          queries: [ {wodgit: test::Widget[1]|test::Widget.all()->filter(input|$widget.widgetId == $input.widgetid)}\n" +
-                "                   ];\n" +
-                "          keyType: GeneratedPrimaryKey;\n" +
-                "          precedence: 1;\n" +
-                "        }\n" +
-                "      ]\n" +
-                "  }\n" +
-                "}\n";
-        System.out.println(testInput);
-        test(testInput);
+        System.out.println(TestMasteryCompilationFromGrammar.COMPLETE_CORRECT_MODEL);
+        test(TestMasteryCompilationFromGrammar.COMPLETE_CORRECT_MODEL);
     }
 
     //@Test

@@ -16,7 +16,9 @@ Class {doc.doc = 'Defines a Master Record and all configuration required for man
 {
   //{doc.doc = 'The name used to identify this master record that is unique within the parent Dataspace|Datastore.'} uniqueName : String[1];
   {doc.doc = 'The class that is managed in this Master Record. (For Alloy Mastery this must extend MasterRecord.)'} modelClass : meta::pure::metamodel::type::Class<Any>[1];
-  {doc.doc = 'The identity resolution configuration used to identify a record in the master store using the inputs provided, the inputs usually do not contain the primary key'} identityResolution : meta::pure::mastery::metamodel::resolution::IdentityResolution[1];
+  {doc.doc = 'The identity resolution configuration used to identify a record in the master store using the inputs provided, the inputs usually do not contain the primary key'} identityResolution : meta::pure::mastery::metamodel::resolution::IdentityResolution[0..1];
+  {doc.doc = 'Defines how child collections should conpare objects for equality, required only if the object type in a collection does not have an equality key stereotype defined.'} collectionEquality: meta::pure::mastery::metamodel::CollectionEquality[0..*];
+  sources: meta::pure::mastery::metamodel::RecordSource[0..*];
 }
 
 Enum {doc.doc = 'A control used to define how to validate the queries generated and how to validate the the results of executing the queries.'}
@@ -48,4 +50,65 @@ meta::pure::mastery::metamodel::resolution::ResolutionQuery
   {doc.doc='Expressions that refer to attributes used to generate queries that are executed on the master store.'}                              resolutionQueries : meta::pure::metamodel::function::LambdaFunction<Any>[1..*];
   {doc.doc='The control type used to define how to validate the queries generated from the input and validate the results of query execution.'} keyType : meta::pure::mastery::metamodel::resolution::ResolutionKeyType[1];
   {doc.doc='The query precedence applied when there are more than 1 ResoultionQuery definitions on an IdentityResolution.'}                     precedence : Integer[1];
+}
+
+//TODO gallch - doc.doc
+Class meta::pure::mastery::metamodel::CollectionEquality 
+{
+  collectionPath: meta::pure::metamodel::path::PropertyPathElement[1];
+  // collectionModel: Class<Any>[1]; - Derive from PatheElement and compiler will check the 2 ANYs are the same, add to doc.
+  equalityFunctions: meta::pure::metamodel::function::LambdaFunction<{Any[1],Any[1]->Boolean[1]}>[1..*]; //TODO - discuss with Aziem switching to FunctionDefinition
+}
+
+Class meta::pure::mastery::metamodel::RecordSource
+{
+  id: String[1];
+  partitions: meta::pure::mastery::metamodel::RecordSourcePartition[1..*];
+  liveStatus: String[1]; //TODO Enum
+  description: String[1];
+  parseService: meta::legend::service::metamodel::Service[0..1]; 
+  transformService: meta::legend::service::metamodel::Service[0..1]; 
+  extractTransformedService: meta::legend::service::metamodel::Service[0..1]; 
+  sequentialData: Boolean[0..1];
+  stagedLoad: Boolean[0..1]; 
+  dataProvider: String[1]; //TODO Enum and definition of provider classes
+  createPermitted: Boolean[0..1];
+  createBlockException: Boolean[0..1];
+  certificationTestIds: String[1..*]; //TODO add test specification?
+}
+
+Class meta::pure::mastery::metamodel::RecordSourcePartition
+{
+  id: String[1];
+  sourceDependencies: String[*]; //TODO Source/Partition pair as a class?
+  dataClassification: String[*]; //
+  swingCheck_TO_FILE: String[*];
+  runtimePartameters: String[*];
+}
+
+Class meta::pure::mastery::metamodel::todo::Schedule_TBC
+{
+    effectiveDateRollWindow: String[0..1];
+}
+
+Class meta::pure::mastery::metamodel::todo::SLO_TBC_NEGOTIATOR
+{
+}
+
+Class meta::pure::mastery::metamodel::todo::DataQuality_TBC_NEGOTIATOR
+{
+}
+
+Class meta::pure::mastery::metamodel::todo::WriteConfiguration_TBC
+{
+}
+
+Class meta::pure::mastery::metamodel::todo::DataStore_Space_Set_TBC
+{
+  name: String[1];
+  description: String[1];
+  applicstionId: String[0..1];
+  sensitivityLabels: String[1..*];
+  schemaName: String[1];
+  liveStatus: String[1]; //Was inDemis: Boolean[0..1]
 }
