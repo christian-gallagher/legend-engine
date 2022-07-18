@@ -80,7 +80,7 @@ public class HelperMasterRecordDefinitionBuilder
         {
             Root_meta_pure_mastery_metamodel_resolution_IdentityResolution_Impl resImpl = new Root_meta_pure_mastery_metamodel_resolution_IdentityResolution_Impl("");
             resImpl._modelClass(context.resolveClass(protocolVal.modelClass));
-            resImpl._queriesAddAll(ListIterate.flatCollect(protocolVal.resolutionQueries, this::visitResolutionQuery));
+            resImpl._resolutionQueriesAddAll(ListIterate.flatCollect(protocolVal.resolutionQueries, this::visitResolutionQuery));
             return resImpl;
         }
 
@@ -95,7 +95,7 @@ public class HelperMasterRecordDefinitionBuilder
 
             ListIterate.forEachWithIndex(protocolQuery.queries, (lambda, i) ->
             {
-                resQuery._resolutionQueriesAdd(HelperValueSpecificationBuilder.buildLambda(lambda, context));
+                resQuery._queriesAdd(HelperValueSpecificationBuilder.buildLambda(lambda, context));
             });
 
             list.add(resQuery);

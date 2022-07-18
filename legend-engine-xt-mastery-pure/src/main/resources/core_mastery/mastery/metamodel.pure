@@ -40,14 +40,14 @@ Class {doc.doc = 'Defines how to resolve a single incoming record to match a sin
 meta::pure::mastery::metamodel::resolution::IdentityResolution
 {
   {doc.doc = 'The master record class that this identity resolution applies to.'} modelClass : Class<Any>[1];
-  {doc.doc = 'The set of queries used to identify a single record in the master store. Not required if the Master record has a single equality.Key field defined that is not generated.'} queries : meta::pure::mastery::metamodel::resolution::ResolutionQuery[0..*];
+  {doc.doc = 'The set of queries used to identify a single record in the master store. Not required if the Master record has a single equality.Key field defined that is not generated.'} resolutionQueries : meta::pure::mastery::metamodel::resolution::ResolutionQuery[0..*];
 }
 
 Class {doc.doc = 'Defines queries used for identity resolution to identify a master record instance to update and prevent duplicates from being created.'}
 meta::pure::mastery::metamodel::resolution::ResolutionQuery
 {
-  //{doc.doc='Expressions that refer to attributes used to generate queries that are executed on the master store.'}                              resolutionQueries : meta::pure::metamodel::function::FunctionDefinition<Any>[1..*];
-  {doc.doc='Expressions that refer to attributes used to generate queries that are executed on the master store.'}                              resolutionQueries : meta::pure::metamodel::function::LambdaFunction<Any>[1..*];
+  //{doc.doc='Expressions that refer to attributes used to generate queries that are executed on the master store.'}                              queries : meta::pure::metamodel::function::FunctionDefinition<Any>[1..*];
+  {doc.doc='Expressions that refer to attributes used to generate queries that are executed on the master store.'}                              queries : meta::pure::metamodel::function::LambdaFunction<Any>[1..*];
   {doc.doc='The control type used to define how to validate the queries generated from the input and validate the results of query execution.'} keyType : meta::pure::mastery::metamodel::resolution::ResolutionKeyType[1];
   {doc.doc='The query precedence applied when there are more than 1 ResoultionQuery definitions on an IdentityResolution.'}                     precedence : Integer[1];
 }

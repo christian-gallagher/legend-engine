@@ -160,7 +160,7 @@ Diagram meta::pure::mastery::Mastery_Core_Diagram(width=0.0, height=0.0)
         lineWidth=1.0)
 
     PropertyView pview_0(
-        property=meta::pure::mastery::metamodel::resolution::IdentityResolution.queries,
+        property=meta::pure::mastery::metamodel::resolution::IdentityResolution.resolutionQueries,
         source=cview_4,
         target=cview_3
 ,        points=[(449.65822,496.98745),(448.00048,664.96615)],
