@@ -100,7 +100,6 @@ public class MasteryParseTreeWalker
 
         //queries
         resolutionQuery.queries = (List<Lambda>) ListIterate.flatCollect(ctx.queryExpressions(), this::visitQueryExpressions);
-        //resolutionQuery.queries = visitQueryExpressions(ctx);
 
         //keyType
         MasteryParserGrammar.ResolutionQueryKeyTypeContext resolutionQueryKeyTypeContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.resolutionQueryKeyType(), "keyType", sourceInformation);

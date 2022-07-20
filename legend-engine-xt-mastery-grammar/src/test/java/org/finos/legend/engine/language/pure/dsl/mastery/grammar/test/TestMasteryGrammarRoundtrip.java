@@ -22,7 +22,7 @@ public class TestMasteryGrammarRoundtrip extends TestGrammarRoundtrip.TestGramma
 {
 
     @Test
-    public void masteryFlat()
+    public void masteryRoundTrip()
     {
         System.out.println(TestMasteryCompilationFromGrammar.COMPLETE_CORRECT_MODEL);
         test(TestMasteryCompilationFromGrammar.COMPLETE_CORRECT_MODEL);

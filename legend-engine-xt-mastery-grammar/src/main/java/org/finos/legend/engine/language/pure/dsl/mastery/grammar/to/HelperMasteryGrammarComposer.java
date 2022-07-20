@@ -108,8 +108,16 @@ public class HelperMasteryGrammarComposer
             {
                 builder.append(",\n").append(getTabString(indentLevel)).append("         ");
             }
-            //builder.append(getTabString(indentLevel));
-            builder.append("{").append(lambda.accept(DEPRECATED_PureGrammarComposerCore.Builder.newInstance(context).build())).append("}");
+            //TODO fix internal bug - Issue with lambda builder that it sometimes wraps the whole lambda with { } so sniff (urrrgh!) for the wrappers and add only if not present
+            String lambdaStr = lambda.accept(DEPRECATED_PureGrammarComposerCore.Builder.newInstance(context).build());
+            if (!lambdaStr.startsWith("{"))
+            {
+                builder.append("{").append(lambdaStr).append("}");
+            }
+            else
+            {
+                builder.append(lambdaStr);
+            }
         });
         return builder.append("\n").toString();
     }
