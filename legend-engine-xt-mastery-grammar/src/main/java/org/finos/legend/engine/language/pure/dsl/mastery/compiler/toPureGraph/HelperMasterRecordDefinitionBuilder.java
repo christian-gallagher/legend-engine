@@ -14,19 +14,26 @@
 
 package org.finos.legend.engine.language.pure.dsl.mastery.compiler.toPureGraph;
 
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.impl.utility.Iterate;
 import org.eclipse.collections.impl.utility.ListIterate;
 import org.finos.legend.engine.language.pure.compiler.toPureGraph.CompileContext;
 import org.finos.legend.engine.language.pure.compiler.toPureGraph.HelperValueSpecificationBuilder;
 import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.MasterRecordDefinition;
-import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.resolution.IdentityResolution;
-import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.resolution.IdentityResolutionVisitor;
-import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.resolution.ResolutionQuery;
-//import org.finos.legend.pure.generated.;
-import org.finos.legend.pure.generated.Root_meta_pure_mastery_metamodel_resolution_IdentityResolution;
-import org.finos.legend.pure.generated.Root_meta_pure_mastery_metamodel_resolution_IdentityResolution_Impl;
-import org.finos.legend.pure.generated.Root_meta_pure_mastery_metamodel_resolution_ResolutionQuery;
-import org.finos.legend.pure.generated.Root_meta_pure_mastery_metamodel_resolution_ResolutionQuery_Impl;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.RecordSource;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.RecordSourcePartition;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.RecordSourceVisitor;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.identity.IdentityResolution;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.identity.IdentityResolutionVisitor;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.identity.ResolutionQuery;
+import org.finos.legend.pure.generated.Root_meta_pure_mastery_metamodel_RecordSource;
+import org.finos.legend.pure.generated.Root_meta_pure_mastery_metamodel_RecordSourcePartition;
+import org.finos.legend.pure.generated.Root_meta_pure_mastery_metamodel_RecordSourcePartition_Impl;
+import org.finos.legend.pure.generated.Root_meta_pure_mastery_metamodel_RecordSource_Impl;
+import org.finos.legend.pure.generated.Root_meta_pure_mastery_metamodel_identity_IdentityResolution;
+import org.finos.legend.pure.generated.Root_meta_pure_mastery_metamodel_identity_IdentityResolution_Impl;
+import org.finos.legend.pure.generated.Root_meta_pure_mastery_metamodel_identity_ResolutionQuery;
+import org.finos.legend.pure.generated.Root_meta_pure_mastery_metamodel_identity_ResolutionQuery_Impl;
 import org.finos.legend.pure.m3.coreinstance.Package;
 import org.finos.legend.pure.m3.coreinstance.meta.pure.metamodel.PackageableElement;
 import org.finos.legend.pure.m3.coreinstance.meta.pure.metamodel.type.Class;
@@ -35,6 +42,7 @@ import org.finos.legend.pure.m3.coreinstance.meta.pure.metamodel.type.Type;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 
 public class HelperMasterRecordDefinitionBuilder
 {
@@ -47,7 +55,6 @@ public class HelperMasterRecordDefinitionBuilder
 
     public static org.finos.legend.pure.m3.coreinstance.meta.pure.metamodel.type.Class buildModelClass(MasterRecordDefinition val, CompileContext context)
     {
-
         Class<?> modelClass = context.resolveClass(val.modelClass);
         return modelClass;
     }
@@ -65,31 +72,31 @@ public class HelperMasterRecordDefinitionBuilder
         return Iterate.makeString(deque, "", "::", "::" + type._name());
     }
 
-    public static Root_meta_pure_mastery_metamodel_resolution_IdentityResolution buildIdentityResolution(IdentityResolution identityResolution, CompileContext context)
+    public static Root_meta_pure_mastery_metamodel_identity_IdentityResolution buildIdentityResolution(IdentityResolution identityResolution, CompileContext context)
     {
         IDENTITY_RESOLUTION_BUILDER.context = context;
         return identityResolution.accept(IDENTITY_RESOLUTION_BUILDER);
     }
 
-    private static class IdentityResolutionBuilder implements IdentityResolutionVisitor<Root_meta_pure_mastery_metamodel_resolution_IdentityResolution>
+    private static class IdentityResolutionBuilder implements IdentityResolutionVisitor<Root_meta_pure_mastery_metamodel_identity_IdentityResolution>
     {
         private CompileContext context;
 
         @Override
-        public Root_meta_pure_mastery_metamodel_resolution_IdentityResolution visit(IdentityResolution protocolVal)
+        public Root_meta_pure_mastery_metamodel_identity_IdentityResolution visit(IdentityResolution protocolVal)
         {
-            Root_meta_pure_mastery_metamodel_resolution_IdentityResolution_Impl resImpl = new Root_meta_pure_mastery_metamodel_resolution_IdentityResolution_Impl("");
+            Root_meta_pure_mastery_metamodel_identity_IdentityResolution_Impl resImpl = new Root_meta_pure_mastery_metamodel_identity_IdentityResolution_Impl("");
             resImpl._modelClass(context.resolveClass(protocolVal.modelClass));
             resImpl._resolutionQueriesAddAll(ListIterate.flatCollect(protocolVal.resolutionQueries, this::visitResolutionQuery));
             return resImpl;
         }
 
-        private Iterable<Root_meta_pure_mastery_metamodel_resolution_ResolutionQuery> visitResolutionQuery(ResolutionQuery protocolQuery)
+        private Iterable<Root_meta_pure_mastery_metamodel_identity_ResolutionQuery> visitResolutionQuery(ResolutionQuery protocolQuery)
         {
-            ArrayList<Root_meta_pure_mastery_metamodel_resolution_ResolutionQuery> list = new ArrayList<>();
-            Root_meta_pure_mastery_metamodel_resolution_ResolutionQuery resQuery = new Root_meta_pure_mastery_metamodel_resolution_ResolutionQuery_Impl("");
+            ArrayList<Root_meta_pure_mastery_metamodel_identity_ResolutionQuery> list = new ArrayList<>();
+            Root_meta_pure_mastery_metamodel_identity_ResolutionQuery resQuery = new Root_meta_pure_mastery_metamodel_identity_ResolutionQuery_Impl("");
 
-            String KEY_TYPE_FULL_PATH = MASTERY_PACKAGE_PREFIX + "::resolution::ResolutionKeyType";
+            String KEY_TYPE_FULL_PATH = MASTERY_PACKAGE_PREFIX + "::identity::ResolutionKeyType";
             resQuery._keyType(context.resolveEnumValue(KEY_TYPE_FULL_PATH, protocolQuery.keyType.name()));
             resQuery._precedence(protocolQuery.precedence);
 
@@ -100,6 +107,46 @@ public class HelperMasterRecordDefinitionBuilder
 
             list.add(resQuery);
             return list;
+        }
+    }
+
+    public static RichIterable<Root_meta_pure_mastery_metamodel_RecordSource> buildRecordSources(List<RecordSource> recordSources, CompileContext context)
+    {
+        return ListIterate.collect(recordSources, n -> n.accept(new RecordSourceBuilder(context)));
+    }
+
+    private static class RecordSourceBuilder implements RecordSourceVisitor<Root_meta_pure_mastery_metamodel_RecordSource>
+    {
+        private CompileContext context;
+
+        public RecordSourceBuilder(CompileContext context)
+        {
+            this.context = context;
+        }
+
+        @Override
+        public Root_meta_pure_mastery_metamodel_RecordSource visit(RecordSource protocolSource)
+        {
+            String KEY_TYPE_FULL_PATH = MASTERY_PACKAGE_PREFIX + "::RecordSourceStatus";
+            Root_meta_pure_mastery_metamodel_RecordSource pureSource = new Root_meta_pure_mastery_metamodel_RecordSource_Impl("");
+            pureSource._id(protocolSource.id);
+            pureSource._description(protocolSource.description);
+            pureSource._status(context.resolveEnumValue(KEY_TYPE_FULL_PATH, protocolSource.status.name()));
+            pureSource._sequentialData(protocolSource.sequentialData);
+            pureSource._stagedLoad(protocolSource.stagedLoad);
+            pureSource._createPermitted(protocolSource.createPermitted);
+            pureSource._createBlockedException(protocolSource.createBlockedException);
+            pureSource._tags(ListIterate.collect(protocolSource.tags, n -> n.toString()));
+            pureSource._partitions(ListIterate.collect(protocolSource.partitions, n -> this.visitPartition(n)));
+            return pureSource;
+        }
+
+        private Root_meta_pure_mastery_metamodel_RecordSourcePartition visitPartition(RecordSourcePartition protocolPartition)
+        {
+            Root_meta_pure_mastery_metamodel_RecordSourcePartition purePartition = new Root_meta_pure_mastery_metamodel_RecordSourcePartition_Impl("");
+            purePartition._id(protocolPartition.id);
+            purePartition._tags(ListIterate.collect(protocolPartition.tags, n -> n.toString()));
+            return purePartition;
         }
     }
 }

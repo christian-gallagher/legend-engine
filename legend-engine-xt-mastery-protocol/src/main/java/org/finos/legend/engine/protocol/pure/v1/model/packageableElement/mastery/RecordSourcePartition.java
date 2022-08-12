@@ -1,4 +1,4 @@
-// Copyright 2020 Goldman Sachs
+// Copyright 2022 Goldman Sachs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,12 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.resolution;
+package org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery;
 
-public enum ResolutionKeyType
+import java.util.ArrayList;
+import java.util.List;
+
+public class RecordSourcePartition implements Tagable
 {
-    GeneratedPrimaryKey,
-    SuppliedPrimaryKey,
-    AlternateKey,
-    Optional
+    public String id;
+    public List<String> tags = new ArrayList<String>();
+
+    @Override
+    public List<String> getTags()
+    {
+        return tags;
+    }
 }

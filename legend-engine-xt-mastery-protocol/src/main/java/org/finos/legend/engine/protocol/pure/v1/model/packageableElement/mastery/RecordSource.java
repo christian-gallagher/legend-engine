@@ -12,20 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.resolution;
+package org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery;
 
 import org.finos.legend.engine.protocol.pure.v1.model.SourceInformation;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.identity.IdentityResolutionVisitor;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class IdentityResolution
+public class RecordSource implements Tagable
 {
-    public String modelClass;
-    public List<ResolutionQuery> resolutionQueries = Collections.emptyList();
+    public String id;
+    public String description;
+    public RecordSourceStatus status;
+    public boolean sequentialData;
+    public boolean stagedLoad;
+    public boolean createPermitted;
+    public boolean createBlockedException;
+    public List<String> tags = new ArrayList<String>();
+    public List<RecordSourcePartition> partitions = Collections.emptyList();
+
     public SourceInformation sourceInformation;
 
-    public <T> T accept(IdentityResolutionVisitor<T> visitor)
+    public List<String> getTags()
+    {
+        return tags;
+    }
+
+    public <T> T accept(RecordSourceVisitor<T> visitor)
     {
         return visitor.visit(this);
     }

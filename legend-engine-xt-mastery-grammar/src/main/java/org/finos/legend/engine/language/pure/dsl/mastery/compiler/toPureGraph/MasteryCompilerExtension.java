@@ -27,8 +27,6 @@ import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.connect
 
 import java.util.Collections;
 
-import static org.finos.legend.engine.language.pure.dsl.mastery.compiler.toPureGraph.HelperMasterRecordDefinitionBuilder.buildModelClass;
-
 public class MasteryCompilerExtension implements CompilerExtension
 {
     @Override
@@ -45,6 +43,7 @@ public class MasteryCompilerExtension implements CompilerExtension
                 {
                     Root_meta_pure_mastery_metamodel_MasterRecordDefinition pureMasteryMetamodelMasterRecordDefinition = (Root_meta_pure_mastery_metamodel_MasterRecordDefinition) context.pureModel.getOrCreatePackage(masterRecordDefinition._package)._children().detect(c -> masterRecordDefinition.name.equals(c._name()));
                     pureMasteryMetamodelMasterRecordDefinition._identityResolution(HelperMasterRecordDefinitionBuilder.buildIdentityResolution(masterRecordDefinition.identityResolution, context));
+                    pureMasteryMetamodelMasterRecordDefinition._sources(HelperMasterRecordDefinitionBuilder.buildRecordSources(masterRecordDefinition.sources, context));
                 }
         ));
     }

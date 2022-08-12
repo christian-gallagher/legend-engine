@@ -12,16 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.resolution;
+package org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.identity;
 
+import org.finos.legend.engine.protocol.pure.v1.model.SourceInformation;
+
+import java.util.Collections;
 import java.util.List;
-import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.domain.Function;
-import org.finos.legend.engine.protocol.pure.v1.model.valueSpecification.raw.Lambda;
 
-public class ResolutionQuery
+public class IdentityResolution
 {
-    //public List<Function> queries;
-    public List<Lambda> queries;
-    public ResolutionKeyType keyType;
-    public Integer precedence;
+    public String modelClass;
+    public List<ResolutionQuery> resolutionQueries = Collections.emptyList();
+    public SourceInformation sourceInformation;
+
+    public <T> T accept(IdentityResolutionVisitor<T> visitor)
+    {
+        return visitor.visit(this);
+    }
 }

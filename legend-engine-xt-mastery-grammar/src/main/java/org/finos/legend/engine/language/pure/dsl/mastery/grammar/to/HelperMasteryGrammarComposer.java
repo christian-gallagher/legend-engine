@@ -17,14 +17,18 @@ package org.finos.legend.engine.language.pure.dsl.mastery.grammar.to;
 import org.eclipse.collections.impl.utility.ListIterate;
 import org.finos.legend.engine.language.pure.grammar.to.DEPRECATED_PureGrammarComposerCore;
 import org.finos.legend.engine.language.pure.grammar.to.PureGrammarComposerContext;
-import org.finos.legend.engine.language.pure.grammar.to.PureGrammarComposerUtility;
-import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.resolution.IdentityResolution;
-import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.resolution.IdentityResolutionVisitor;
 import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.MasterRecordDefinition;
-import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.resolution.ResolutionQuery;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.RecordSource;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.RecordSourcePartition;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.RecordSourceVisitor;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.Tagable;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.identity.IdentityResolution;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.identity.IdentityResolutionVisitor;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.identity.ResolutionQuery;
+
+import java.util.List;
 
 import static org.finos.legend.engine.language.pure.grammar.to.PureGrammarComposerUtility.convertPath;
-import static org.finos.legend.engine.language.pure.grammar.to.PureGrammarComposerUtility.convertString;
 import static org.finos.legend.engine.language.pure.grammar.to.PureGrammarComposerUtility.getTabString;
 
 
@@ -43,15 +47,93 @@ public class HelperMasteryGrammarComposer
                 "{\n" +
                 renderModelClass(masterRecordDefinition.modelClass, indentLevel, context) +
                 renderIdentityResolution(masterRecordDefinition.identityResolution, indentLevel, context) +
+                renderRecordSources(masterRecordDefinition.sources, indentLevel, context) +
                 "}";
-        System.out.println("masteryRendered:\n" + masteryRendered);
         return masteryRendered;
     }
 
+    /*
+     * MasterRecordDefinition Attributes
+     */
     private static String renderModelClass(String modelClass, int indentLevel, PureGrammarComposerContext context)
     {
         return getTabString(indentLevel) + "modelClass: " + modelClass + ";\n";
     }
+
+    /*
+     * MasterRecordSources
+     */
+    private static String renderRecordSources(List<RecordSource> sources, int indentLevel, PureGrammarComposerContext context)
+    {
+        StringBuilder sourcesStr = new StringBuilder()
+                .append(getTabString(indentLevel) + "recordSources:\n")
+                .append(getTabString(indentLevel)).append("[\n");
+                ListIterate.forEachWithIndex(sources, (source, i) ->
+                {
+                    sourcesStr.append(i > 0 ? ",\n" : "").append(getTabString(indentLevel + 1)).append("{\n");;
+                    sourcesStr.append(source.accept(new RecordSourceComposer(indentLevel, context)));
+                    sourcesStr.append(getTabString(indentLevel + 1)).append("}");
+                });
+                sourcesStr.append("\n").append(getTabString(indentLevel)).append("]\n");
+        return sourcesStr.toString();
+    }
+
+    private static class RecordSourceComposer implements RecordSourceVisitor<String>
+    {
+        private final int indentLevel;
+        private final PureGrammarComposerContext context;
+
+        private RecordSourceComposer(int indentLevel, PureGrammarComposerContext context)
+        {
+            this.indentLevel = indentLevel;
+            this.context = context;
+        }
+
+        @Override
+        public String visit(RecordSource val)
+        {
+              return getTabString(indentLevel + 2) + "id: " + val.id + ";\n" +
+                    getTabString(indentLevel + 2) + "description: " + val.description + ";\n" +
+                    getTabString(indentLevel + 2) + "status: " + val.status + ";\n" +
+                    getTabString(indentLevel + 2) + "sequentialData: " + val.sequentialData + ";\n" +
+                    getTabString(indentLevel + 2) + "stagedLoad: " + val.stagedLoad + ";\n" +
+                    getTabString(indentLevel + 2) + "createPermitted: " + val.createPermitted + ";\n" +
+                    getTabString(indentLevel + 2) + "createBlockedException: " + val.createBlockedException + ";\n" +
+                    getTabString(indentLevel + 1) + renderTags(val, indentLevel) + "\n" +
+                    getTabString(indentLevel + 1) + renderPartitions(val, indentLevel) + "\n";
+        }
+    }
+
+    private static String renderPartitions(RecordSource source, int indentLevel)
+    {
+        StringBuffer strBuf = new StringBuffer();
+        strBuf.append(getTabString(indentLevel)).append("partitions:\n");
+        strBuf.append(getTabString(indentLevel + 2)).append("[");
+        ListIterate.forEachWithIndex(source.partitions, (partition, i) ->
+        {
+            strBuf.append(i > 0 ? "," : "").append("\n").append(getTabString(indentLevel + 3)).append("{\n");;
+            strBuf.append(renderPartition(partition, indentLevel + 3)).append("\n");
+            strBuf.append(getTabString(indentLevel + 3)).append("}");
+        });
+        strBuf.append("\n").append(getTabString(indentLevel + 2)).append("]");
+        return strBuf.toString();
+    }
+
+    private static String renderTags(Tagable tagable, int indentLevel)
+    {
+        return getTabString(indentLevel) + "tags: " + tagable.getTags().toString() + ";";
+    }
+
+    private static String renderPartition(RecordSourcePartition partition, int indentLevel)
+    {
+        StringBuffer strBuf = new StringBuffer().append(getTabString(indentLevel + 1)).append("id: ").append(partition.id).append(";\n");
+        strBuf.append(renderTags(partition, indentLevel + 1));
+        return strBuf.toString();
+    }
+
+    /*
+     * Identity and Resolution
+     */
 
     private static String renderIdentityResolution(IdentityResolution identityResolution, int indentLevel, PureGrammarComposerContext context)
     {

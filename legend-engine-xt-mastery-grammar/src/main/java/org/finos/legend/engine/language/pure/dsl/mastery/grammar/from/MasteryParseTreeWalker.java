@@ -14,6 +14,7 @@
 
 package org.finos.legend.engine.language.pure.dsl.mastery.grammar.from;
 
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.collections.impl.utility.ListIterate;
 import org.finos.legend.engine.language.pure.grammar.from.ParseTreeWalkerSourceInformation;
 import org.finos.legend.engine.language.pure.grammar.from.PureGrammarParserUtility;
@@ -22,16 +23,20 @@ import org.finos.legend.engine.language.pure.grammar.from.domain.DomainParser;
 import org.finos.legend.engine.protocol.pure.v1.model.SourceInformation;
 import org.finos.legend.engine.protocol.pure.v1.model.context.EngineErrorType;
 import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.PackageableElement;
-import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.resolution.IdentityResolution;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.RecordSource;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.RecordSourcePartition;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.RecordSourceStatus;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.identity.IdentityResolution;
 import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.MasterRecordDefinition;
-import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.resolution.ResolutionKeyType;
-import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.resolution.ResolutionQuery;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.identity.ResolutionKeyType;
+import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.identity.ResolutionQuery;
 import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.section.ImportAwareCodeSection;
 import org.finos.legend.engine.protocol.pure.v1.model.valueSpecification.raw.Lambda;
 import org.finos.legend.engine.shared.core.operational.errorManagement.EngineException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.function.Consumer;
 
 public class MasteryParseTreeWalker
@@ -49,10 +54,6 @@ public class MasteryParseTreeWalker
         this.section = section;
         this.domainParser = domainParser;
     }
-
-    /**********
-     * mastery
-     **********/
 
     public void visit(MasteryParserGrammar.DefinitionContext ctx)
     {
@@ -74,9 +75,102 @@ public class MasteryParseTreeWalker
         MasteryParserGrammar.IdentityResolutionContext identityResolutionContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.identityResolution(), "identityResolution", masterRecordDefinition.sourceInformation);
         masterRecordDefinition.identityResolution = visitIdentityResolution(identityResolutionContext);
 
+        //Master Record Sources
+        MasteryParserGrammar.RecordSourcesContext recordSourcesContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.recordSources(), "recordSources", masterRecordDefinition.sourceInformation);
+        masterRecordDefinition.sources = ListIterate.collect(recordSourcesContext.recordSource(), this::visitRecordSource);
+
         return masterRecordDefinition;
     }
 
+    /*
+     * Record Sources
+     */
+
+    private RecordSource visitRecordSource(MasteryParserGrammar.RecordSourceContext ctx)
+    {
+        RecordSource source = new RecordSource();
+        source.sourceInformation = walkerSourceInformation.getSourceInformation(ctx);
+
+        MasteryParserGrammar.IdContext idContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.id(), "id", source.sourceInformation);
+        source.id = idContext.STRING().getText();
+
+        MasteryParserGrammar.DescriptionContext descriptionContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.description(), "description", source.sourceInformation);
+        source.description = descriptionContext.STRING().getText();
+
+        MasteryParserGrammar.RecordStatusContext statusContext  = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.recordStatus(), "status", source.sourceInformation);
+        source.status = visitRecordStatus(statusContext);
+
+        MasteryParserGrammar.SequentialDataContext sequentialDataContext  = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.sequentialData(), "sequentialData", source.sourceInformation);
+        source.sequentialData = sequentialDataContext.boolean_value().TRUE() != null;
+
+        MasteryParserGrammar.StagedLoadContext stagedLoadContext  = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.stagedLoad(), "stagedLoad", source.sourceInformation);
+        source.stagedLoad = stagedLoadContext.boolean_value().TRUE() != null;;
+
+        MasteryParserGrammar.CreatePermittedContext createPermittedContext  = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.createPermitted(), "createPermitted", source.sourceInformation);
+        source.createPermitted = createPermittedContext.boolean_value().TRUE() != null;;
+
+        MasteryParserGrammar.CreateBlockedExceptionContext createBlockedExceptionContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.createBlockedException(), "createBlockedException", source.sourceInformation);
+        source.createBlockedException = createBlockedExceptionContext.boolean_value().TRUE() != null;;
+
+        MasteryParserGrammar.TagsContext tagsContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.tags(), "tags", source.sourceInformation);
+        ListIterator stringIterator = tagsContext.STRING().listIterator();
+        while (stringIterator.hasNext())
+        {
+           source.tags.add(((TerminalNode) stringIterator.next()).toString());
+        }
+        MasteryParserGrammar.SourcePartitionsContext partitionsContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.sourcePartitions(), "partitions", source.sourceInformation);
+        source.partitions = ListIterate.collect(partitionsContext.sourcePartiton(), this::visitRecordSourcePartition);;
+
+        return source;
+    }
+
+    private RecordSourceStatus visitRecordStatus(MasteryParserGrammar.RecordStatusContext ctx)
+    {
+        SourceInformation sourceInformation = walkerSourceInformation.getSourceInformation(ctx);
+        if (ctx.RECORD_SOURCE_STATUS_DEVELOPMENT() != null)
+        {
+            return RecordSourceStatus.Development;
+        }
+        if (ctx.RECORD_SOURCE_STATUS_TEST_ONLY() != null)
+        {
+            return RecordSourceStatus.TestOnly;
+        }
+        if (ctx.RECORD_SOURCE_STATUS_PRODUCTION() != null)
+        {
+            return RecordSourceStatus.Production;
+        }
+        if (ctx.RECORD_SOURCE_STATUS_DORMANT() != null)
+        {
+            return RecordSourceStatus.Dormant;
+        }
+        if (ctx.RECORD_SOURCE_STATUS_DECOMMINISSIONED() != null)
+        {
+            return RecordSourceStatus.Decommissioned;
+        }
+
+        throw new EngineException("Unrecognized record status", sourceInformation, EngineErrorType.PARSER);
+    }
+
+    private RecordSourcePartition visitRecordSourcePartition(MasteryParserGrammar.SourcePartitonContext ctx)
+    {
+        SourceInformation sourceInformation = walkerSourceInformation.getSourceInformation(ctx);
+        RecordSourcePartition partition = new RecordSourcePartition();
+
+        MasteryParserGrammar.IdContext idContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.id(), "id", sourceInformation);
+        partition.id = idContext.STRING().getText();
+
+        MasteryParserGrammar.TagsContext tagsContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.tags(), "tags", sourceInformation);
+        ListIterator stringIterator = tagsContext.STRING().listIterator();
+        while (stringIterator.hasNext())
+        {
+            partition.tags.add(((TerminalNode) stringIterator.next()).toString());
+        }
+        return partition;
+    }
+
+    /*
+     * Identity and Resolution
+     */
     private IdentityResolution visitIdentityResolution(MasteryParserGrammar.IdentityResolutionContext ctx)
     {
         IdentityResolution identityResolution = new IdentityResolution();

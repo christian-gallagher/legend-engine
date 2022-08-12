@@ -11,7 +11,7 @@ options
 
 identifier:                                 VALID_STRING | STRING
                                             | TRUE | FALSE
-                                            | MASTER_RECORD_DEFINITION | MODEL_CLASS
+                                            | MASTER_RECORD_DEFINITION | MODEL_CLASS | RECORD_SOURCES | SOURCE_PARTITIONS
 ;
 
 // -------------------------------------- DEFINITION --------------------------------------
@@ -20,21 +20,107 @@ definition:                                 //imports
                                             (mastery)*
                                             EOF
 ;
-//TODO gallch
-//imports:                                    (importStatement)*
-//;
-//importStatement:                            IMPORT packagePath PATH_SEPARATOR STAR SEMI_COLON
-//;
+imports:                                    (importStatement)*
+;
+importStatement:                            IMPORT packagePath PATH_SEPARATOR STAR SEMI_COLON
+;
 mastery:                                    MASTER_RECORD_DEFINITION qualifiedName
                                                 BRACE_OPEN
                                                 (
                                                     modelClass
                                                     | identityResolution
+                                                    | recordSources
                                                 )*
                                                 BRACE_CLOSE
 ;
 modelClass:                                 MODEL_CLASS COLON qualifiedName SEMI_COLON
 ;
+recordSources:                              RECORD_SOURCES COLON
+                                            BRACKET_OPEN
+                                            (
+                                                recordSource
+                                                (
+                                                    COMMA
+                                                    recordSource
+                                                )*
+                                            )
+                                            BRACKET_CLOSE
+;
+recordSource:                               BRACE_OPEN
+                                            (
+                                                id
+                                                | recordStatus
+                                                | description
+                                                | sequentialData
+                                                | stagedLoad
+                                                | createPermitted
+                                                | createBlockedException
+                                                | tags
+                                                | sourcePartitions
+                                            )*
+                                            BRACE_CLOSE
+;
+sourcePartitions:                           SOURCE_PARTITIONS COLON
+                                            BRACKET_OPEN
+                                            (
+                                                sourcePartiton
+                                                (
+                                                    COMMA
+                                                    sourcePartiton
+                                                )*
+                                            )
+                                            BRACKET_CLOSE
+;
+sourcePartiton:                             BRACE_OPEN
+                                            (
+                                                 id
+                                                 | tags
+                                            )*
+                                            BRACE_CLOSE
+;
+
+/*************
+ * Common
+ *************/
+boolean_value:                              TRUE | FALSE
+;
+id:                                         ID COLON STRING SEMI_COLON
+;
+description:                                DESCRIPTION COLON STRING SEMI_COLON
+;
+tags:                                       TAGS COLON
+                                            BRACKET_OPEN
+                                            (
+                                                STRING (COMMA STRING)*
+                                            )*
+                                            BRACKET_CLOSE
+                                            SEMI_COLON
+;
+/*************
+ * MasterRecordDefinition
+ *************/
+recordStatus:                               RECORD_SOURCE_STATUS COLON
+                                            (
+                                                RECORD_SOURCE_STATUS_DEVELOPMENT
+                                                    | RECORD_SOURCE_STATUS_TEST_ONLY
+                                                    | RECORD_SOURCE_STATUS_PRODUCTION
+                                                    | RECORD_SOURCE_STATUS_DORMANT
+                                                    | RECORD_SOURCE_STATUS_DECOMMINISSIONED
+                                            )
+                                            SEMI_COLON
+;
+sequentialData:                             RECORD_SOURCE_SEQUENTIAL COLON boolean_value SEMI_COLON
+;
+stagedLoad:                                 RECORD_SOURCE_STAGED COLON boolean_value SEMI_COLON
+;
+createPermitted:                            RECORD_SOURCE_CREATE_PERMITTED COLON boolean_value SEMI_COLON
+;
+createBlockedException:                     RECORD_SOURCE_CREATE_BLOCKED_EXCEPTION COLON boolean_value SEMI_COLON
+;
+
+/*************
+ * Resolution
+ *************/
 identityResolution:                         IDENTITIY_RESOLUTION COLON
                                             BRACE_OPEN
                                             (
@@ -62,35 +148,12 @@ resolutionQuery:                            BRACE_OPEN
                                             BRACE_CLOSE
 ;
 
-
 queryExpressions:                           RESOLUTION_QUERY_EXPRESSIONS COLON
                                                 BRACKET_OPEN
-                                                    (lambdaFunction (COMMA lambdaFunction)*) //originally used
-                                                    //(combinedExpression (COMMA combinedExpression)*) //originally used
+                                                    (lambdaFunction (COMMA lambdaFunction)*)
                                                 BRACKET_CLOSE
                                             SEMI_COLON
 ;
-
-//ISLAND approach
-//queryExpressions:                           RESOLUTION_QUERY_EXPRESSIONS COLON queryExpressionsIsland  //todo - to lambda function
-//;
-//queryExpressionsIsland:                      ISLAND_OPEN (queryExpressionsContent)*
-//;
-//queryExpressionsContent:                    ISLAND_START | ISLAND_BRACE_OPEN | ISLAND_CONTENT | ISLAND_HASH | ISLAND_BRACE_CLOSE | ISLAND_END
-//;
-
-//queries : #{ #{ { content
-
-//#{\n" +
-//"        JsonModelConnection\n" +
-//"        {\n" +
-//"          class: org::dxl::Animal;\n" +
-//"          url: 'my_url2';\n" +
-//"        }\n" +
-//"      }#\n" +
-
-
-
 
 resolutionQueryKeyType:                  RESOLUTION_QUERY_KEY_TYPE COLON (
                                             RESOLUTION_QUERY_KEY_TYPE_GENERATED_PRIMARY_KEY

@@ -13,13 +13,23 @@ IMPORT:                                     'import';
 //**********
 // MASTERY
 //**********
-
-//MASTERY:                                    'Mastery';
 MASTER_RECORD_DEFINITION:                       'MasterRecordDefinition';
-MODEL_CLASS:                                    'modelClass';
+
+RECORD_SOURCES:                                 'recordSources';
+RECORD_SOURCE_STATUS:                           'status';
+RECORD_SOURCE_SEQUENTIAL:                       'sequentialData';
+RECORD_SOURCE_STAGED:                           'stagedLoad';
+RECORD_SOURCE_CREATE_PERMITTED:                 'createPermitted';
+RECORD_SOURCE_CREATE_BLOCKED_EXCEPTION:         'createBlockedException';
+RECORD_SOURCE_STATUS_DEVELOPMENT:               'Development';
+RECORD_SOURCE_STATUS_TEST_ONLY:                 'TestOnly';
+RECORD_SOURCE_STATUS_PRODUCTION:                'Production';
+RECORD_SOURCE_STATUS_DORMANT:                   'Dormant';
+RECORD_SOURCE_STATUS_DECOMMINISSIONED:          'Decomissioned';
+
+SOURCE_PARTITIONS:                              'partitions';
 
 IDENTITIY_RESOLUTION:                           'identityResolution';
-
 RESOLUTION_QUERIES:                             'resolutionQueries';
 RESOLUTION_QUERY_EXPRESSIONS:                   'queries';
 RESOLUTION_QUERY_PRECEDENCE:                    'precedence';
@@ -30,12 +40,10 @@ RESOLUTION_QUERY_KEY_TYPE_ALTERNATE_KEY:        'AlternateKey'; //AlternateKey (
 RESOLUTION_QUERY_KEY_TYPE_OPTIONAL:             'Optional';
 
 
-//MAppings from original Master configs
-//MandatoryIfPresent                    -> GeneratedPrimaryKey (Validated against Equality Key and fail if don't find match)
-//OneMandatory  (Single supplied PK)    -> SuppliedPrimaryKey (Validated against equality key to ensure an actuial PK and create if don't find match)
-//OneMandatory  (ALt key Group)         -> AlternateKey (In an AlternateKey is specified then at least one required in the input record or fail resolution)
-//FieldMandatoryIfMRFoundReturnError    -> AlternateKey && (CurationModel field == Create) then the input source is attempting to create a new record (e.g. from UI) block if existing record found
-//Optionanl                             -> Optional (Used for matching if supplied but no validation applied)
-
-
-
+//*************
+// COMMON
+//*************
+ID:                                             'id';
+MODEL_CLASS:                                    'modelClass';
+DESCRIPTION:                                    'description';
+TAGS:                                           'tags';
