@@ -76,10 +76,6 @@
 
     <dependencies>
         <!-- PURE -->
-        <!--dependency>
-            <groupId>org.finos.legend.pure</groupId>
-            <artifactId>legend-pure-m2-dsl-mapping</artifactId>
-        </dependency-->
         <dependency>
             <groupId>org.finos.legend.pure</groupId>
             <artifactId>legend-pure-m3-core</artifactId>
@@ -88,10 +84,6 @@
             <groupId>org.finos.legend.engine</groupId>
             <artifactId>legend-engine-xt-mastery-pure</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.finos.legend.engine</groupId>-->
-<!--            <artifactId>legend-engine-pure-code-compiled-core</artifactId>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.finos.legend.pure</groupId>
             <artifactId>legend-pure-runtime-java-engine-compiled</artifactId>
@@ -103,23 +95,10 @@
             <groupId>org.finos.legend.engine</groupId>
             <artifactId>legend-engine-protocol</artifactId>
         </dependency>
-        <!--dependency>
-            <groupId>org.finos.legend.engine</groupId>
-            <artifactId>legend-engine-language-pure-grammar</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.finos.legend.engine</groupId>
-            <artifactId>legend-engine-language-pure-compiler</artifactId>
-        </dependency-->
         <dependency>
             <groupId>org.finos.legend.engine</groupId>
             <artifactId>legend-engine-protocol-pure</artifactId>
         </dependency>
-        <!--dependency>
-            <groupId>org.finos.legend.engine</groupId>
-            <artifactId>legend-engine-protocol-external-shared-format</artifactId> //OLD
-            <artifactId>legend-engine-xt-relationalStore-protocol</artifactId>
-        </dependency-->
         <dependency>
             <groupId>org.finos.legend.engine</groupId>
             <artifactId>legend-engine-xt-mastery-protocol</artifactId>
