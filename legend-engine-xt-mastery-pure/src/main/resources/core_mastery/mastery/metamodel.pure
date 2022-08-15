@@ -134,11 +134,14 @@ meta::pure::mastery::metamodel::identity::ResolutionKeyType
 Class {doc.doc='Defines how child collections should compare objects for equality, required for collections that contain objects that do not have a primary key defined (by an equality key stereotype on the model).'}
 meta::pure::mastery::metamodel::identity::CollectionEquality 
 {
-  {doc.doc = 'The path of the collection for which the equality functions apply. (The class is inferred from the type of the collection.)'}
-  collectionPath: meta::pure::metamodel::path::PropertyPathElement[1];
-  
+  {doc.doc = 'The class of data that the equality function is applied to when it exists in a collection.'}
+  modelClass : meta::pure::metamodel::type::Class<Any>[1];
+
   {doc.doc = 'The functions applied to elements in the collection, if all functions return true then the objects are equal.'}
-  equalityFunctions: meta::pure::metamodel::function::LambdaFunction<{Any[1],Any[1]->Boolean[1]}>[1..*];
+  equalityFunctions: meta::pure::metamodel::function::LambdaFunction<{Any[1],Any[1]->Boolean[1]}>[1];
+
+  //{doc.doc = 'The path of the collection for which the equality functions apply, this enables the same class to have different equality functions in different collections in a model. (Will be added when a use case is found and when PropertyPathElement is supported in Studio.)'}
+  //collectionPath: meta::pure::metamodel::path::PropertyPathElement[1];
 }
 
 
