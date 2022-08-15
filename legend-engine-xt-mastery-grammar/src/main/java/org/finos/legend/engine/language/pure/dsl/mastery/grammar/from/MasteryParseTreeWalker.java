@@ -14,6 +14,7 @@
 
 package org.finos.legend.engine.language.pure.dsl.mastery.grammar.from;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.collections.impl.utility.ListIterate;
 import org.finos.legend.engine.language.pure.grammar.from.ParseTreeWalkerSourceInformation;
@@ -33,6 +34,7 @@ import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery
 import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.section.ImportAwareCodeSection;
 import org.finos.legend.engine.protocol.pure.v1.model.valueSpecification.raw.Lambda;
 import org.finos.legend.engine.shared.core.operational.errorManagement.EngineException;
+import org.finos.legend.pure.m3.compiler.Context;
 
 import java.util.Collections;
 import java.util.List;
@@ -100,28 +102,50 @@ public class MasteryParseTreeWalker
         MasteryParserGrammar.RecordStatusContext statusContext  = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.recordStatus(), "status", source.sourceInformation);
         source.status = visitRecordStatus(statusContext);
 
-        MasteryParserGrammar.SequentialDataContext sequentialDataContext  = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.sequentialData(), "sequentialData", source.sourceInformation);
-        source.sequentialData = sequentialDataContext.boolean_value().TRUE() != null;
+        MasteryParserGrammar.SequentialDataContext sequentialDataContext  = PureGrammarParserUtility.validateAndExtractOptionalField(ctx.sequentialData(), "sequentialData", source.sourceInformation);
+        source.sequentialData = evaluateBoolean(sequentialDataContext, (sequentialDataContext != null ? sequentialDataContext.boolean_value() : null), null);
 
-        MasteryParserGrammar.StagedLoadContext stagedLoadContext  = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.stagedLoad(), "stagedLoad", source.sourceInformation);
-        source.stagedLoad = stagedLoadContext.boolean_value().TRUE() != null;;
+        MasteryParserGrammar.StagedLoadContext stagedLoadContext  = PureGrammarParserUtility.validateAndExtractOptionalField(ctx.stagedLoad(), "stagedLoad", source.sourceInformation);
+        source.stagedLoad = evaluateBoolean(stagedLoadContext, (stagedLoadContext != null ? stagedLoadContext.boolean_value() : null), null);
 
-        MasteryParserGrammar.CreatePermittedContext createPermittedContext  = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.createPermitted(), "createPermitted", source.sourceInformation);
-        source.createPermitted = createPermittedContext.boolean_value().TRUE() != null;;
+        MasteryParserGrammar.CreatePermittedContext createPermittedContext  = PureGrammarParserUtility.validateAndExtractOptionalField(ctx.createPermitted(), "createPermitted", source.sourceInformation);
+        source.createPermitted = evaluateBoolean(createPermittedContext, (createPermittedContext != null ? createPermittedContext.boolean_value() : null), null);
 
-        MasteryParserGrammar.CreateBlockedExceptionContext createBlockedExceptionContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.createBlockedException(), "createBlockedException", source.sourceInformation);
-        source.createBlockedException = createBlockedExceptionContext.boolean_value().TRUE() != null;;
+        MasteryParserGrammar.CreateBlockedExceptionContext createBlockedExceptionContext = PureGrammarParserUtility.validateAndExtractOptionalField(ctx.createBlockedException(), "createBlockedException", source.sourceInformation);
+        source.createBlockedException = evaluateBoolean(createBlockedExceptionContext, (createBlockedExceptionContext != null ? createBlockedExceptionContext.boolean_value() : null), null);
 
-        MasteryParserGrammar.TagsContext tagsContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.tags(), "tags", source.sourceInformation);
-        ListIterator stringIterator = tagsContext.STRING().listIterator();
-        while (stringIterator.hasNext())
+        MasteryParserGrammar.TagsContext tagsContext = PureGrammarParserUtility.validateAndExtractOptionalField(ctx.tags(), "tags", source.sourceInformation);
+        if (tagsContext != null)
         {
-           source.tags.add(((TerminalNode) stringIterator.next()).toString());
+            ListIterator stringIterator = tagsContext.STRING().listIterator();
+            while (stringIterator.hasNext())
+            {
+                source.tags.add(((TerminalNode) stringIterator.next()).toString());
+            }
         }
         MasteryParserGrammar.SourcePartitionsContext partitionsContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.sourcePartitions(), "partitions", source.sourceInformation);
         source.partitions = ListIterate.collect(partitionsContext.sourcePartiton(), this::visitRecordSourcePartition);;
 
         return source;
+    }
+
+    private Boolean evaluateBoolean(ParserRuleContext context, MasteryParserGrammar.Boolean_valueContext booleanValueContext, Boolean defaultVal) {
+        Boolean result = null;
+        if (context == null){
+            result = defaultVal;
+        }
+        else if (booleanValueContext.TRUE() != null)
+        {
+            result = Boolean.TRUE;
+        }
+        else if (booleanValueContext.FALSE() != null)
+        {
+            result = Boolean.FALSE;
+        }
+        else {
+            result = defaultVal;
+        }
+        return result;
     }
 
     private RecordSourceStatus visitRecordStatus(MasteryParserGrammar.RecordStatusContext ctx)
@@ -159,11 +183,14 @@ public class MasteryParseTreeWalker
         MasteryParserGrammar.IdContext idContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.id(), "id", sourceInformation);
         partition.id = idContext.STRING().getText();
 
-        MasteryParserGrammar.TagsContext tagsContext = PureGrammarParserUtility.validateAndExtractRequiredField(ctx.tags(), "tags", sourceInformation);
-        ListIterator stringIterator = tagsContext.STRING().listIterator();
-        while (stringIterator.hasNext())
+        MasteryParserGrammar.TagsContext tagsContext = PureGrammarParserUtility.validateAndExtractOptionalField(ctx.tags(), "tags", sourceInformation);
+        if (tagsContext != null)
         {
-            partition.tags.add(((TerminalNode) stringIterator.next()).toString());
+            ListIterator stringIterator = tagsContext.STRING().listIterator();
+            while (stringIterator.hasNext())
+            {
+                partition.tags.add(((TerminalNode) stringIterator.next()).toString());
+            }
         }
         return partition;
     }

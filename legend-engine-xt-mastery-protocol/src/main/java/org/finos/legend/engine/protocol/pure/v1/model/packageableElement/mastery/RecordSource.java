@@ -26,10 +26,10 @@ public class RecordSource implements Tagable
     public String id;
     public String description;
     public RecordSourceStatus status;
-    public boolean sequentialData;
-    public boolean stagedLoad;
-    public boolean createPermitted;
-    public boolean createBlockedException;
+    public Boolean sequentialData;
+    public Boolean stagedLoad;
+    public Boolean createPermitted;
+    public Boolean createBlockedException;
     public List<String> tags = new ArrayList<String>();
     public List<RecordSourcePartition> partitions = Collections.emptyList();
 

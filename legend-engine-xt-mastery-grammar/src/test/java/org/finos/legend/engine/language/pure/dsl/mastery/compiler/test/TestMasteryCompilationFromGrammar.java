@@ -164,16 +164,10 @@ public class TestMasteryCompilationFromGrammar extends TestCompilationFromGramma
             "      id: \'widget-file-single-partition\';\n" +
             "      description: \'Single partition source.\';\n" +
             "      status: Development;\n" +
-            "      sequentialData: true;\n" +
-            "      stagedLoad: false;\n" +
-            "      createPermitted: true;\n" +
-            "      createBlockedException: false;\n" +
-            "      tags: [\'Refinitive DSP\'];\n" +
             "      partitions:\n" +
             "      [\n" +
             "        {\n" +
             "          id: \'partition-1\';\n" +
-            "          tags: [\'Equity\'];\n" +
             "        }\n" +
             "      ]\n" +
             "    }\n" +
