@@ -127,7 +127,24 @@ meta::pure::persistence::metamodel::trigger::CronTrigger extends Trigger
    month: String[1];
    dayOfWeek: String[1];
    year: String[1];
+   timeZone_TODO: String[0..1]; //Default to UTC
 }
+
+Class meta::pure::persistence::metamodel::trigger::IntervalTrigger extends Trigger
+{
+  start: CronTrigger[1];
+  end: CronTrigger[0..1];
+  intervalDays: Integer[0..1];
+  intervalHours: Integer[0..1];
+  intervalMinutes: Integer[1]; 
+}
+
+Class meta::pure::persistence::metamodel::trigger::Window
+{
+  start: Trigger[1];
+  end: Trigger[1];
+}
+
 
 /**********
  * persister
