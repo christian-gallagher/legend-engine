@@ -41,6 +41,9 @@ meta::pure::mastery::metamodel::RecordSource
   {doc.doc='Description of the RecordSource suitable for end users.'}
   description: String[1];
 
+  {doc.doc='The proider of the data in the RecordSource.'}
+  provider : meta::pure::mastery::metamodel::changecontrol::DataProvider_TBC[1];
+
   {doc.doc='Sources have at least one partition to support parameters (e.g. filename), schedules and SLOs that may vary for the different functional partitions in which the data is delivered. (For e.g. see Bloomberg equity files)'}
   partitions: meta::pure::mastery::metamodel::RecordSourcePartition[1..*];
   
@@ -64,6 +67,10 @@ meta::pure::mastery::metamodel::RecordSource
 
   {doc.doc='A collection of tags used to label the source, typically used to classify the data loaded e.g. an asset class, region, etc...'}
   tags: String[*];
+
+  //NEW - TODO
+  {doc.doc='TODO - Need to generically model providers, do these have to become strings?'}
+  dataProvider_TODO: String[1]; //TODO Enum and definition of provider classes
 }
 
 Class {doc.doc='A functional partion of a RecordSource splitting a source into logical sections, this is a common practice for many data vendors (see Bloomberg Equity File). Partions can have different parameters (e.g. filename), schedules and SLOs.'}
@@ -74,6 +81,21 @@ meta::pure::mastery::metamodel::RecordSourcePartition
 
   {doc.doc='A collection of tags used to label the partition, typically used to classify the data loaded e.g. an asset class, region, etc...'}
   tags: String[*]; 
+
+  //NEW - TODO
+  connection_TODO: meta::pure::runtime::Connection[1];
+  startTriggers_TODO: meta::pure::persistence::metamodel::trigger::Trigger[1..*];
+  sourceDependencies_TODO: String[*]; //TODO Source/Partition pair as a class?
+
+  suspension_TODO: meta::pure::persistence::metamodel::trigger::Window[0..*];
+  rollEffectiveDateInSuspension_TODO: Boolean[0..1];
+  
+  sloSupension_TODO: meta::pure::persistence::metamodel::trigger::Window[0..*];
+  slos_TODO: meta::pure::mastery::metamodel::todo::SLO_TBC_NEGOTIATOR[*];
+  
+  swingCheck_TO_FILE: String[*];
+  params_TODO: String[*]; //TODO key value pair
+  // runtimePartameters_TODO: String[*];
 }
 
 Enum {doc.doc = 'Release status used to apply controls on models and configuration to preserve lineage and provenance.'}
@@ -143,5 +165,387 @@ meta::pure::mastery::metamodel::identity::CollectionEquality
   //{doc.doc = 'The path of the collection for which the equality functions apply, this enables the same class to have different equality functions in different collections in a model. (Will be added when a use case is found and when PropertyPathElement is supported in Studio.)'}
   //collectionPath: meta::pure::metamodel::path::PropertyPathElement[1];
 }
+
+
+
+
+
+
+
+/**********************************************
+/* Additional fields to add in the next MR...
+**********************************************/ 
+
+// ********************************
+// Core Classes
+// ********************************
+
+Class meta::pure::mastery::metamodel::todo::RecordSource_TODO
+{
+  certificationTestIds_TODO: String[1..*]; //TODO add test specification?
+}
+
+
+// ********************************
+// Dataset and Exception Management
+// ********************************
+
+Class meta::pure::mastery::metamodel::MasterRecordGroup_TBC extends PackageableElement
+{
+  {doc.doc='Name of the dataset used for the control plan but also to identify where data belongs during processing and at rest.'}
+  uniqueName: String[1]; //TODO replace with qualifiedName?
+
+  {doc.doc='The Master Records managed withing this Dataset.'}
+  masterRecords : meta::pure::mastery::metamodel::MasterRecordDefinition[0..*];
+
+  {doc.doc='Optional name to group MasterDatasets where applicable, e.g. SecurityMaster and TickLadderMaster are grouped into domain Products.'}
+  domain: String[0..1];
+
+  {doc.doc='Detailed descrition of the MAsterDataset.'}
+  description: String[1];
+
+  {doc.doc='The system / application that owns the management of this Dataset, the platform provides tools to manage but is not the owning application.'}
+  systemId: String[0..1]; //TODO can this be made generic or does this need to move into Alloy internal?
+  
+  {doc.doc='Indication of any sensitive data that may be stored in this dataset.'}
+  sensitivityLabels: String[1..*]; //TODO ENUM
+
+  {doc.doc='The label given to the collection of models of the MasterRecoordDeinitions stored in the Dataset.'} //TODO improve the comment.
+  schemaName: String[1];
+
+  {doc.doc='The status of the Datasourse in terms of suitability for use and support levels.'}
+  livenessStatus: String[1]; //TODO Was inDemis: Boolean[0..1] converty to enum (TestOnly, Live, InDemise, Demised)
+
+  {doc.doc='If deined this drives how exceptions are generated for the exception management system.'}
+  exceptionSpecification : meta::pure::mastery::metamodel::dataquality::ExceptionManagementSpecification_TBC[0..1];
+}
+
+//TODO id this too GS specific?
+Class meta::pure::mastery::metamodel::dataquality::ExceptionManagementSpecification_TBC
+{
+  {doc.doc='The identifier for the location / control witin the exception managment system.'}
+  controlId : String[1];
+  
+  {doc.doc='The system / application that is raisining the exception.'}
+  reportingSystemId: String[1]; //TODO - infer from Dataset.systemId or maintain flexibility? 
+
+  {doc.doc='Transforms the record with an exception into a model format required by the exception management system.'}
+  exceptionTransformationService: meta::legend::service::metamodel::Service[1];
+}
+
+
+// ********************************
+// Connection and Scheduling
+// ********************************
+
+Class <<typemodifiers.abstract>> {doc.doc=''}
+meta::pure::mastery::metamodel::connection::AuthenticatedConnection extends meta::pure::runtime::Connection
+{
+  //connectionSpecification: meta::pure::mastery::metamodel::connection::ConnectionSpecification[1];
+  authenticationStrategy: meta::pure::mastery::metamodel::connection::AuthenticationStrategy[1];
+}
+
+
+Class <<typemodifiers.abstract>> {doc.doc=''} 
+meta::pure::mastery::metamodel::connection::AuthenticationStrategy //TODO mopve to pure::alloy::connection
+{
+}
+
+Class meta::pure::mastery::metamodel::connection::FileConnection extends meta::pure::mastery::metamodel::connection::AuthenticatedConnection
+{
+  connectionSpecification: meta::pure::mastery::metamodel::connection::FileConnectionSpecification[1];
+  filePath: String[1];
+  ignorefilePaths: String[1];
+  effectiveDateLocation: String[0..1]; //TODO enum
+  effectiveDateFormat: String[0..1];
+  regExprBeforeEffectiveDate: String[0..1];
+  regExprAfterEffectiveDate: String[0..1];
+  //keyForEffectiveDate: String[0..1];
+  //keyForRecords: String[0..1];
+  linesBeforeEffectiveDate: Integer[0..1];
+  effectiveDate: Date[0..1];
+  regExprBeforeFileName: String[0..1];
+  regExprAfterFileName: String[0..1];
+  keyLength: Integer[0..1];
+  keyStartPosition: Integer[0..1];
+  linesInHeader_TODO_FlatData: Integer[0..1];
+  preProcessCommand: String[0..1]; //TODO enum
+
+
+
+
+}
+
+Class meta::pure::mastery::metamodel::connection::TopicConnection extends meta::pure::mastery::metamodel::connection::AuthenticatedConnection
+{
+  connectionSpecification: meta::pure::mastery::metamodel::connection::TopicConnectionSpecification[1];
+}
+
+Class meta::pure::mastery::metamodel::connection::ProducerApiConnection extends meta::pure::mastery::metamodel::connection::AuthenticatedConnection
+{
+  connectionSpecification: meta::pure::mastery::metamodel::connection::ProducerApiConnectionSpecification[1];
+  authorizationPolicy : String[1];
+  authorizedRoles: String[1..*];
+}
+
+
+Class meta::pure::mastery::metamodel::connection::ServiceConnection extends meta::pure::mastery::metamodel::connection::AuthenticatedConnection
+{
+  connectionSpecification: meta::pure::mastery::metamodel::connection::ServiceConnectionSpecification[1];
+}
+
+Class <<typemodifiers.abstract>> {doc.doc=''}
+meta::pure::mastery::metamodel::connection::FileConnectionSpecification //TODO mopve to pure::alloy::connection
+{
+}
+Class meta::pure::mastery::metamodel::connection::FtpFileConnectionSpecification extends meta::pure::mastery::metamodel::connection::FileConnectionSpecification
+{
+}
+
+Class meta::pure::mastery::metamodel::connection::HttpFileConnectionSpecification extends meta::pure::mastery::metamodel::connection::FileConnectionSpecification
+{
+}
+
+Class <<typemodifiers.abstract>> {doc.doc=''}
+meta::pure::mastery::metamodel::connection::TopicConnectionSpecification //TODO mopve to pure::alloy::connection
+{
+}
+
+Class meta::pure::mastery::metamodel::connection::KafkaConnectionSpecification extends meta::pure::mastery::metamodel::connection::TopicConnectionSpecification
+{
+}
+
+Class <<typemodifiers.abstract>> {doc.doc=''}
+meta::pure::mastery::metamodel::connection::ServiceConnectionSpecification //TODO mopve to pure::alloy::connection
+{
+}
+
+Class <<typemodifiers.abstract>> {doc.doc=''}
+meta::pure::mastery::metamodel::connection::ProducerApiConnectionSpecification //TODO mopve to pure::alloy::connection
+{
+}
+
+Class meta::pure::mastery::metamodel::connection::RestApiSpecification extends meta::pure::mastery::metamodel::connection::ProducerApiConnectionSpecification
+{
+}
+
+
+
+
+
+
+Class meta::pure::mastery::metamodel::todo::SegmentTrigger extends meta::pure::persistence::metamodel::trigger::IntervalTrigger
+{
+  startSegment: Integer[1];
+  endSegment: Integer[1];
+}
+
+Class meta::pure::mastery::metamodel::todo::FullAndDeltaSegmentTrigger extends meta::pure::mastery::metamodel::todo::SegmentTrigger
+{
+  lastFullIndicatorFilePath: String[1];
+  lastFullIndicatorFileRegExpr: String[1];
+}
+
+
+
+
+
+
+// ************
+// DataQuality
+// ************
+Class meta::pure::mastery::metamodel::todo::SLO_TBC_NEGOTIATOR
+{
+  criticality : String [1]; //TODO enums?
+  sloPeriod : String [1]; //TODO part of schedule?
+  controlTypeTags :  meta::pure::mastery::metamodel::dataquality::ControlType[1..0];
+  maxRunTimeInMinutes : String[1]; //TODO what is this for?
+  sloAction : String[1]; //TODO enum
+}
+
+Class meta::pure::mastery::metamodel::dataquality::DataQuality_TBC_NEGOTIATOR
+{
+  {doc.doc = 'SRE controls typoes included in this control, this can be more than one for e.g. when accuracy and completeness overlap.'}
+  controlTypeTags :  meta::pure::mastery::metamodel::dataquality::ControlType[1..0];
+
+  {doc.doc = 'The unique ID for this control withing the scope of the Dataset.'}
+  controlId : String[1];
+
+  {doc.doc='Transforms the record resulting from a control failure into a model format required by the exception management system.'}
+  exceptionTransformationService: meta::legend::service::metamodel::Service[1];
+}
+
+Enum {doc.doc = 'Types of resolution keys.'}
+meta::pure::mastery::metamodel::dataquality::ControlType
+{
+  Accuracy,
+  Completeness,
+  Uniqueness
+}
+
+Class meta::pure::mastery::metamodel::todo::WriteConfiguration_TBC
+{
+}
+
+
+
+
+
+// ***************
+// Change Control
+// ***************
+Class meta::pure::mastery::metamodel::changecontrol::DataProvider_TBC
+{
+  id : String[1];
+  providerType : String [1]; //TODO review if this makes sense to be a String or try to enumerate generically: Aggregator, Origin (Exchange), InternalApplication, Steward, StewardBulkUpload
+  description : String [1];
+}
+
+Class meta::pure::mastery::metamodel::changecontrol::ChangeEvent_RUNTIME_ONLY //TODO do we need this runtime instance?
+{
+  path : String[1];
+  permitted : Boolean[0..1];
+  controls : meta::pure::mastery::metamodel::changecontrol::ChangeEventControl_TBC [0..*];
+}
+
+Class meta::pure::mastery::metamodel::changecontrol::ChangeEventControl_TBC
+{
+  id : String[1];
+  // changeControlType : meta::pure::mastery::metamodel::changecontrol::ChangeControlType[1];
+  // controlAction : meta::pure::mastery::metamodel::changecontrol::ChangeControlAction[1];
+  scope: meta::pure::mastery::metamodel::changecontrol::ChangeEventControlScope_TBC[*];
+  path : String[1]; //TODO model path not JSON path?
+  description : String[1];
+
+
+  datasetScope : String[1];
+  domainScope : String[1]; //TODO remove or collapse?
+  masterRecord : String[1];
+
+  message : String[1];
+  activationState : String[1]; // TODO Enum Active/DeAvtivated
+}
+
+Class meta::pure::mastery::metamodel::changecontrol::ChangeEventControlScope_TBC
+{
+  providerType : String[0..1];
+  providerId : String[0..1];
+  sourceId : String[0..1];
+}
+
+Class meta::pure::mastery::metamodel::changecontrol::PrecedenceChangeControl_TBC extends meta::pure::mastery::metamodel::changecontrol::ChangeEventControl_TBC
+{
+  precedence : Integer[1];
+  controlAction : meta::pure::mastery::metamodel::changecontrol::ChangeControlAction[1];
+}
+
+Class meta::pure::mastery::metamodel::changecontrol::ConditionalChangeControl_TBC extends meta::pure::mastery::metamodel::changecontrol::ChangeEventControl_TBC
+{
+  conditionalRule : String[1]; //TODO type shoudl be an expression in PURE
+  controlAction : meta::pure::mastery::metamodel::changecontrol::ChangeControlAction[1];
+}
+
+Class meta::pure::mastery::metamodel::changecontrol::MergeChangeControl_TBC extends meta::pure::mastery::metamodel::changecontrol::ChangeEventControl_TBC
+{
+  applyDelete : Boolean[1];
+  addToCollection : Boolean[1];
+}
+
+Class meta::pure::mastery::metamodel::changecontrol::RecordChangeControl_TBC extends meta::pure::mastery::metamodel::changecontrol::ChangeEventControl_TBC
+{
+  masterRecordId : String[1];
+  controlAction : meta::pure::mastery::metamodel::changecontrol::ChangeControlAction[1];
+}
+
+
+Enum {doc.doc='The action that the ChangeEventControl will apply.'}
+meta::pure::mastery::metamodel::changecontrol::ChangeControlAction
+{
+  Block,
+  // BlockAddingToCollection,
+  Overwrite,
+  OverwriteIfNull
+  // ApplyDelete
+}
+
+// Enum {doc.doc='The action that the ChangeEventControl will apply.'}
+// meta::pure::mastery::metamodel::changecontrol::ChangeControlType
+// {
+  // {doc.doc='Defines the order of precedence for different sources of data'}
+  // SourcePrecedence,
+
+  // {doc.doc='For a specific scope (normally a source) define what actions can be performed e.g. ApplyDelete'}
+  // MergeScope, //only have apply delete
+
+  // {doc.doc='Permit creating objects in a collection?'}
+  // Create, //TODO is this actually applied - only for blocking addint to a collection
+
+  // {doc.doc='Define a condition refering to data on the change proposal and resolved record to control a change via the ChangeControlAction. e.g. If change.sourceTime < record.sourceTime then Block the update.'}
+  // ConditionalRule,
+
+  // {doc.doc='A change defined at a cell level on an instance of a master record.'}
+  // AttributeLock, //TODO split out this ito a subtype?
+// }
+
+// ***************
+// Provenance
+// ***************
+
+
+Class meta::pure::mastery::metamodel::provenance::MasterRecord
+{
+  dataset: String[1];
+  masterRecord: String[1];
+  masterRecordId : String[1];
+  version: Integer[1];
+  versionLineage : meta::pure::mastery::metamodel::provenance::VersionLineage[1];
+  createDateTime: DateTime[0..1];
+  createSource: String[0..1];
+  updateDateTime: DateTime[0..1];
+  updateSource: String[0..1];
+  updateUserId: String[0..1];
+}
+
+Class meta::pure::mastery::metamodel::provenance::VersionLineage
+{
+  id: String[1];
+  sessionId: String[1];
+  recordId: String[1];
+  recordNumber: Integer[1];
+  sourceRecordId: String[1];
+  recordLineageId: String[1];
+}
+
+Class meta::pure::mastery::metamodel::provenance::RecordLineage
+{
+  recordLineageId: String[1];
+  masterRecordId:  String[1];
+  version: Integer[1];
+  dataset: String[1];
+  masterRecord: String[1];
+  optimised: Boolean[1];
+  createDateTime: DateTime[1];
+  cells: meta::pure::mastery::metamodel::provenance::CellLineage[0..*];
+}
+
+Class meta::pure::mastery::metamodel::provenance::CellLineage
+{
+  path: String[1];
+  sourceId: String[1];
+  updateUserId: String[0..1];
+  updateDateTime: DateTime[1];
+  updateVersion: Integer[1];
+  derivationFunction: meta::legend::service::metamodel::Service[0..1];
+}
+
+//RESOLUTION mapping to/from existing today.
+
+//Mappings from original Master configs
+//MandatoryIfPresent                    -> GeneratedPrimaryKey (Validated against Equality Key and fail if don't find match)
+//OneMandatory  (Single supplied PK)    -> SuppliedPrimaryKey (Validated against equality key to ensure an actuial PK and create if don't find match)
+//OneMandatory  (ALt key Group)         -> AlternateKey (In an AlternateKey is specified then at least one required in the input record or fail resolution)
+//FieldMandatoryIfMRFoundReturnError    -> AlternateKey && (CurationModel field == Create) then the input source is attempting to create a new record (e.g. from UI) block if existing record found
+//Optional                             -> Optional (Used for matching if supplied but no validation applied)
+
 
 

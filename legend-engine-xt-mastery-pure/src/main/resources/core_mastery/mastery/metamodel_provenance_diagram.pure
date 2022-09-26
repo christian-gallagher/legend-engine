@@ -1,0 +1,279 @@
+// Copyright 2022 Goldman Sachs
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+###Diagram
+Diagram meta::pure::mastery::Mastery_Provenance_Diagram(width=0.0, height=0.0)
+{
+    TypeView cview_12(
+        type=meta::pure::mastery::metamodel::changecontrol::ChangeEventControl_TBC,
+        position=(1924.54428, 856.33844),
+        width=170.67383,
+        height=142.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
+    TypeView cview_13(
+        type=meta::pure::mastery::metamodel::changecontrol::ChangeEvent_RUNTIME_ONLY,
+        position=(1911.54428, 642.33844),
+        width=196.92383,
+        height=58.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
+    TypeView cview_17(
+        type=meta::pure::mastery::metamodel::changecontrol::PrecedenceChangeControl_TBC,
+        position=(1758.52927, 1127.36096),
+        width=227.15771,
+        height=58.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
+    TypeView cview_16(
+        type=meta::pure::mastery::metamodel::changecontrol::MergeChangeControl_TBC,
+        position=(1558.52927, 1127.36096),
+        width=173.33984,
+        height=58.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
+    TypeView cview_15(
+        type=meta::pure::mastery::metamodel::changecontrol::DataProvider_TBC,
+        position=(2336.12196, 764.64977),
+        width=142.64893,
+        height=72.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
+    TypeView cview_14(
+        type=meta::pure::mastery::metamodel::changecontrol::ConditionalChangeControl_TBC,
+        position=(2014.52927, 1127.36096),
+        width=227.15771,
+        height=58.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
+    TypeView cview_11(
+        type=meta::pure::mastery::metamodel::changecontrol::ChangeEventControlScope_TBC,
+        position=(2315.18148, 889.33510),
+        width=206.68555,
+        height=72.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
+    TypeView cview_18(
+        type=meta::pure::mastery::metamodel::changecontrol::RecordChangeControl_TBC,
+        position=(2264.50672, 1128.31373),
+        width=227.15771,
+        height=58.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
+    TypeView cview_23(
+        type=meta::pure::mastery::metamodel::provenance::RecordLineage,
+        position=(2768.94438, 882.09466),
+        width=173.05469,
+        height=128.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
+    TypeView cview_25(
+        type=meta::pure::mastery::metamodel::provenance::VersionLineage,
+        position=(2776.59203, 715.89110),
+        width=159.35840,
+        height=114.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
+    TypeView cview_24(
+        type=meta::pure::mastery::metamodel::provenance::CellLineage,
+        position=(2759.43258, 1077.64362),
+        width=192.37988,
+        height=114.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
+    TypeView cview_10(
+        type=meta::pure::mastery::metamodel::RecordSource,
+        position=(2295.24182, 438.84339),
+        width=225.40137,
+        height=240.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
+    TypeView cview_21(
+        type=meta::pure::mastery::metamodel::provenance::MasterRecord,
+        position=(2756.33997, 471.39869),
+        width=204.00830,
+        height=156.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
+    GeneralizationView gview_0(
+        source=cview_14,
+        target=cview_12,
+        points=[(2128.10813,1156.36096),(2009.88120,927.33844)],
+        label='',
+        color=#000000,
+        lineWidth=-1.0,
+        lineStyle=SIMPLE)
+
+    GeneralizationView gview_1(
+        source=cview_16,
+        target=cview_12,
+        points=[(1645.19920,1156.36096),(2009.88120,927.33844)],
+        label='',
+        color=#000000,
+        lineWidth=-1.0,
+        lineStyle=SIMPLE)
+
+    GeneralizationView gview_2(
+        source=cview_17,
+        target=cview_12,
+        points=[(1872.10813,1156.36096),(2009.88120,927.33844)],
+        label='',
+        color=#000000,
+        lineWidth=-1.0,
+        lineStyle=SIMPLE)
+
+    GeneralizationView gview_3(
+        source=cview_18,
+        target=cview_12,
+        points=[(2378.08558,1157.31373),(2009.88120,927.33844)],
+        label='',
+        color=#000000,
+        lineWidth=-1.0,
+        lineStyle=SIMPLE)
+
+    PropertyView pview_0(
+        property=meta::pure::mastery::metamodel::changecontrol::ChangeEventControl_TBC.scope,
+        source=cview_12,
+        target=cview_11
+,        points=[(2009.88120,927.33844),(2418.52426,925.33510)],
+        label='',
+        propertyPosition=(0.0,0.0),
+        multiplicityPosition=(0.0,0.0),
+        color=#000000,
+        lineWidth=-1.0,
+        stereotypesVisible=true,
+        nameVisible=true,
+        lineStyle=SIMPLE)
+
+    PropertyView pview_1(
+        property=meta::pure::mastery::metamodel::changecontrol::ChangeEvent_RUNTIME_ONLY.controls,
+        source=cview_13,
+        target=cview_12
+,        points=[(2010.00620,671.33844),(2009.88120,927.33844)],
+        label='',
+        propertyPosition=(0.0,0.0),
+        multiplicityPosition=(0.0,0.0),
+        color=#000000,
+        lineWidth=-1.0,
+        stereotypesVisible=true,
+        nameVisible=true,
+        lineStyle=SIMPLE)
+
+    PropertyView pview_2(
+        property=meta::pure::mastery::metamodel::RecordSource.provider,
+        source=cview_10,
+        target=cview_15
+,        points=[(2407.94250,558.84339),(2407.44643,800.64977)],
+        label='',
+        propertyPosition=(0.0,0.0),
+        multiplicityPosition=(0.0,0.0),
+        color=#000000,
+        lineWidth=-1.0,
+        stereotypesVisible=true,
+        nameVisible=true,
+        lineStyle=SIMPLE)
+
+    PropertyView pview_3(
+        property=meta::pure::mastery::metamodel::provenance::RecordLineage.cells,
+        source=cview_23,
+        target=cview_24
+,        points=[(2855.47173,946.09466),(2855.62251,1134.64362)],
+        label='',
+        propertyPosition=(0.0,0.0),
+        multiplicityPosition=(0.0,0.0),
+        color=#000000,
+        lineWidth=-1.0,
+        stereotypesVisible=true,
+        nameVisible=true,
+        lineStyle=SIMPLE)
+
+    PropertyView pview_4(
+        property=meta::pure::mastery::metamodel::provenance::MasterRecord.versionLineage,
+        source=cview_21,
+        target=cview_25
+,        points=[(2858.34412,549.39869),(2856.27122,772.89110)],
+        label='',
+        propertyPosition=(0.0,0.0),
+        multiplicityPosition=(0.0,0.0),
+        color=#000000,
+        lineWidth=-1.0,
+        stereotypesVisible=true,
+        nameVisible=true,
+        lineStyle=SIMPLE)
+}
