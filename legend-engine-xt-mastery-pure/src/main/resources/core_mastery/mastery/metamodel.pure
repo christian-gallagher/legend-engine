@@ -230,5 +230,5 @@ Class meta::pure::mastery::metamodel::connection::HttpFileConnection_TODO extend
 
 Class meta::pure::mastery::metamodel::connection::FtpFileConnection_TODO extends meta::pure::mastery::metamodel::connection::FileConnection
 {
- 
+
 }
