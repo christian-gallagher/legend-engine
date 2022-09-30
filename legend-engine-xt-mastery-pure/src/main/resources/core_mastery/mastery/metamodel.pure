@@ -163,7 +163,7 @@ meta::pure::mastery::metamodel::test::MasterRecordTest extends meta::pure::test:
 Class {doc.doc='Test an individual RecordSource loading data.'}
 meta::pure::mastery::metamodel::test::RecordSourceTest extends meta::pure::test::AtomicTest
 {
-  recordSource: meta::pure::mastery::metamodel::RecordSource[1]; //TODO remove this if neted inside the RecordSource in the grammar.
+  recordSourceId: String[1]; //TODO remove this if neted inside the RecordSource in the grammar.
   data: meta::pure::data::EmbeddedData[1];
 }
 
@@ -175,126 +175,5 @@ Class meta::pure::mastery::metamodel::test::MasterRecordTestBatch extends meta::
   test: meta::pure::mastery::metamodel::test::RecordSourceTest[1];
 }
 
-Class <<typemodifiers.abstract>> {doc.doc=''}
-meta::pure::mastery::metamodel::connection::Authentication //TODO mopve to pure::alloy::connection
-{
-}
-
-// ********************************
-// Mastery Runtime
-// ********************************
-// Class meta::pure::mastery::metamodel::runtime::MasteryExecution extends meta::legend::service::metamodel::Execution
-// {
-//   runtime: meta::pure::runtime::Runtime[1];
-// }
-
-
-
-// ********************************
-// Connection and Scheduling
-// ********************************
-
-// Class <<typemodifiers.abstract>> {doc.doc=''}
-// meta::pure::mastery::metamodel::connection::RefactoredConnection
-// {
-//   //connectionSpecification: meta::pure::mastery::metamodel::connection::PhysicalConnectionSpecification[1];
-//   authentication: meta::pure::mastery::metamodel::connection::Authentication[1];
-// }
-
-// Class <<typemodifiers.abstract>> {doc.doc=''}
-// meta::pure::mastery::metamodel::connection::PhysicalConnectionSpecification
-// {
-// }
-
-Class <<typemodifiers.abstract>> {doc.doc=''}
-meta::pure::mastery::metamodel::connection::Authentication //TODO mopve to pure::alloy::connection
-{
-}
-
-Class meta::pure::mastery::metamodel::connection::FileConnection extends meta::pure::runtime::Connection
-{
-  authentication: meta::pure::mastery::metamodel::connection::Authentication[1];
-  //connectionSpecification: meta::pure::mastery::metamodel::connection::FileConnectionSpecification[1];
-  baseUrl: String[1];
-  filePath: String[1];
-  //ignorefilePaths: String[1];
-  // effectiveDateLocation: String[0..1]; //TODO enum
-  // effectiveDateFormat: String[0..1];
-  // regExprBeforeEffectiveDate: String[0..1];
-  // regExprAfterEffectiveDate: String[0..1];
-  // //keyForEffectiveDate: String[0..1];
-  //keyForRecords: String[0..1];
-  // linesBeforeEffectiveDate: Integer[0..1];
-  // effectiveDate: Date[0..1];
-  // regExprBeforeFileName: String[0..1];
-  // regExprAfterFileName: String[0..1];
-  //keyLength: Integer[0..1];
-  //keyStartPosition: Integer[0..1];
-  //linesInHeader_TODO_FlatData: Integer[0..1];
-  // preProcessCommand: String[0..1]; //TODO enum
-
-
-
-
-}
-
-Class meta::pure::mastery::metamodel::connection::TopicConnection extends meta::pure::runtime::Connection
-{
-  //connectionSpecification: meta::pure::mastery::metamodel::connection::TopicConnectionSpecification[1];
-}
-
-Class meta::pure::mastery::metamodel::connection::ProducerApiConnection extends meta::pure::runtime::Connection
-{
-  //connectionSpecification: meta::pure::mastery::metamodel::connection::ProducerApiConnectionSpecification[1];
-  authorizationPolicy : String[1];
-  authorizedRoles: String[1..*];
-}
-
-
-Class meta::pure::mastery::metamodel::connection::HttpFileConnection_TODO extends meta::pure::mastery::metamodel::connection::FileConnection
-{
-  //connectionSpecification: meta::pure::mastery::metamodel::connection::ServiceConnectionSpecification[1];
-}
-
-Class meta::pure::mastery::metamodel::connection::FtpFileConnection_TODO extends meta::pure::mastery::metamodel::connection::FileConnection
-{
-  //connectionSpecification: meta::pure::mastery::metamodel::connection::ServiceConnectionSpecification[1];
-}
-
-
-// Class <<typemodifiers.abstract>> {doc.doc=''}
-// meta::pure::mastery::metamodel::connection::FileConnectionSpecification //TODO mopve to pure::alloy::connection
-// {
-// }
-// Class meta::pure::mastery::metamodel::connection::FtpFileConnectionSpecification extends meta::pure::mastery::metamodel::connection::FileConnectionSpecification
-// {
-// }
-
-// Class meta::pure::mastery::metamodel::connection::HttpFileConnectionSpecification extends meta::pure::mastery::metamodel::connection::FileConnectionSpecification
-// {
-// }
-
-// Class <<typemodifiers.abstract>> {doc.doc=''}
-// meta::pure::mastery::metamodel::connection::TopicConnectionSpecification //TODO mopve to pure::alloy::connection
-// {
-// }
-
-// Class meta::pure::mastery::metamodel::connection::KafkaConnectionSpecification extends meta::pure::mastery::metamodel::connection::TopicConnectionSpecification
-// {
-// }
-
-// Class <<typemodifiers.abstract>> {doc.doc=''}
-// meta::pure::mastery::metamodel::connection::ServiceConnectionSpecification //TODO mopve to pure::alloy::connection
-// {
-// }
-
-// Class <<typemodifiers.abstract>> {doc.doc=''}
-// meta::pure::mastery::metamodel::connection::ProducerApiConnectionSpecification //TODO mopve to pure::alloy::connection
-// {
-// }
-
-// Class meta::pure::mastery::metamodel::connection::RestApiSpecification extends meta::pure::mastery::metamodel::connection::ProducerApiConnectionSpecification
-// {
-// }
 
 
