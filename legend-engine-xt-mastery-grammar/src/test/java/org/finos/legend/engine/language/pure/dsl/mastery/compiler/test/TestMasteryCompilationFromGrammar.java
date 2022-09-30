@@ -142,6 +142,7 @@ public class TestMasteryCompilationFromGrammar extends TestCompilationFromGramma
             "          tags: [\'Equity\', \'Global\', \'Full-Universe\'];\n" +
             "        }\n" +
             "      ]\n" +
+            "      tests: [ recordSourceTest ]\n" +
             "    },\n" +
             "    {\n" +
             "      id: \'widget-file-multiple-partitions\';\n" +
@@ -171,6 +172,7 @@ public class TestMasteryCompilationFromGrammar extends TestCompilationFromGramma
             "      ]\n" +
             "    }\n" +
             "  ]\n" +
+            "  tests: [ masterRecordTest ]\n" +
             "}\n";
 
     public static String MINIMUM_CORRECT_MASTERY_MODEL = "###Pure\n" +

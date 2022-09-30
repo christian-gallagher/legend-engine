@@ -25,9 +25,8 @@ imports:                                    (importStatement)*
 importStatement:                            IMPORT packagePath PATH_SEPARATOR STAR SEMI_COLON
 ;
 
-/*************
- * Common
- *************/
+// -------------------------------------- COMMON --------------------------------------
+
 boolean_value:                              TRUE | FALSE
 ;
 modelClass:                                 MODEL_CLASS COLON qualifiedName SEMI_COLON
@@ -44,22 +43,22 @@ tags:                                       TAGS COLON
                                             BRACKET_CLOSE
                                             SEMI_COLON
 ;
-/*************
- * MasterRecordDefinition
- *************/
+
+// -------------------------------------- MASTER_RECORD_DEFIMNITION --------------------------------------
+
 mastery:                                    MASTER_RECORD_DEFINITION qualifiedName
                                                 BRACE_OPEN
                                                 (
                                                     modelClass
                                                     | identityResolution
                                                     | recordSources
+                                                    | masterRecordTests
                                                 )*
                                                 BRACE_CLOSE
 ;
 
-/****************
- * RecordSources
- ****************/
+// -------------------------------------- RECORD_SOURCES --------------------------------------
+
 recordSources:                              RECORD_SOURCES COLON
                                             BRACKET_OPEN
                                             (
@@ -84,6 +83,7 @@ recordSource:                               BRACE_OPEN
                                                 | createBlockedException
                                                 | tags
                                                 | sourcePartitions
+                                                | recordSourceTests
                                             )*
                                             BRACE_CLOSE
 ;
@@ -129,9 +129,8 @@ sourcePartiton:                             BRACE_OPEN
 ;
 
 
-/*************
- * Resolution
- *************/
+// -------------------------------------- RESOLUTION --------------------------------------
+
 identityResolution:                         IDENTITIY_RESOLUTION COLON
                                             BRACE_OPEN
                                             (
@@ -176,4 +175,17 @@ resolutionQueryKeyType:                  RESOLUTION_QUERY_KEY_TYPE COLON (
 ;
 resolutionQueryPrecedence:               RESOLUTION_QUERY_PRECEDENCE COLON INTEGER SEMI_COLON
 ;
+
+
+// -------------------------------------- TESTS --------------------------------------
+masterRecordTests:                      TESTS COLON BRACKET_OPEN ( masterRecordTest ( COMMA masterRecordTest )* )? BRACKET_CLOSE
+;
+masterRecordTest:                       MASTER_RECORD_TEST
+;
+
+recordSourceTests:                      TESTS COLON BRACKET_OPEN ( recordSourceTest ( COMMA recordSourceTest )* )? BRACKET_CLOSE
+;
+recordSourceTest:                       RECORD_SOURCE_TEST
+;
+
 

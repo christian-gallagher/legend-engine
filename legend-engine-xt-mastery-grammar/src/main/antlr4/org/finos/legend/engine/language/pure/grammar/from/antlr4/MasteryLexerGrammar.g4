@@ -1,4 +1,4 @@
-lexer grammar MasteryLexerGrammar;
+    lexer grammar MasteryLexerGrammar;
 
 import M3LexerGrammar;
 //import DomainLexerGrammar;
@@ -14,6 +14,8 @@ IMPORT:                                     'import';
 // MASTERY
 //**********
 MASTER_RECORD_DEFINITION:                       'MasterRecordDefinition';
+MASTER_RECORD_TEST:                             'masterRecordTest';
+MASTER_RECORD_SOURCE_TESTS:                     'sourceTests';
 
 //RecordSource
 RECORD_SOURCES:                                 'recordSources';
@@ -29,6 +31,8 @@ RECORD_SOURCE_STATUS_TEST_ONLY:                 'TestOnly';
 RECORD_SOURCE_STATUS_PRODUCTION:                'Production';
 RECORD_SOURCE_STATUS_DORMANT:                   'Dormant';
 RECORD_SOURCE_STATUS_DECOMMINISSIONED:          'Decomissioned';
+RECORD_SOURCE_TEST:                             'recordSourceTest';
+
 
 //SourcePartiotions
 SOURCE_PARTITIONS:                              'partitions';
@@ -52,3 +56,6 @@ ID:                                             'id';
 MODEL_CLASS:                                    'modelClass';
 DESCRIPTION:                                    'description';
 TAGS:                                           'tags';
+TESTS:                                          'tests';
+TEST_DATA:                                      'data';
+TEST_ASSERTS:                                   'asserts';

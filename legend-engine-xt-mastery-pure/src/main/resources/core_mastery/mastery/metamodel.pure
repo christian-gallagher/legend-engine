@@ -13,7 +13,7 @@
 // limitations under the License.
 
 Class {doc.doc = 'Defines a Master Record and all configuration required for managing it in a mastering platform.'}
-meta::pure::mastery::metamodel::MasterRecordDefinition extends PackageableElement
+meta::pure::mastery::metamodel::MasterRecordDefinition extends PackageableElement, meta::pure::test::Testable
 {
   {doc.doc = 'The class of data that is managed in this Master Record.'}
   modelClass : meta::pure::metamodel::type::Class<Any>[1];
@@ -30,7 +30,7 @@ meta::pure::mastery::metamodel::MasterRecordDefinition extends PackageableElemen
 
 
 Class <<typemodifiers.abstract>> {doc.doc='A source of data records to be curated into the master, by specifying the connection RecordSource can be from a File, Kafka, Alloy Service (Pull API) or RESTful (Push API).'}
-meta::pure::mastery::metamodel::RecordSource
+meta::pure::mastery::metamodel::RecordSource extends PackageableElement, meta::pure::test::Testable
 {
   {doc.doc='A unique ID defined for the source that is used by the operational control plane to trigger and manage the resulting sourcing session.'}
   id: String[1];
@@ -143,5 +143,37 @@ meta::pure::mastery::metamodel::identity::CollectionEquality
   //{doc.doc = 'The path of the collection for which the equality functions apply, this enables the same class to have different equality functions in different collections in a model. (Will be added when a use case is found and when PropertyPathElement is supported in Studio.)'}
   //collectionPath: meta::pure::metamodel::path::PropertyPathElement[1];
 }
+
+
+
+/*************************
+ * Test Specification
+ *************************/
+
+
+
+Class {doc.doc='Tests on the MasterRecord that can run many different sources in sequence to validate correctness across a combination of RecordSources.'}
+meta::pure::mastery::metamodel::test::MasterRecordTest extends meta::pure::test::AtomicTest
+{
+  // steps: meta::pure::mastery::metamodel::test::RecordTestStep[1..*];
+  //steps: meta::pure::mastery::metamodel::test::RecordSourceTest[1..*];
+  batches: meta::pure::mastery::metamodel::test::MasterRecordTestBatch[1..*];
+}
+
+Class {doc.doc='Test an individual RecordSource loading data.'}
+meta::pure::mastery::metamodel::test::RecordSourceTest extends meta::pure::test::AtomicTest
+{
+  recordSourceId: String[1]; //TODO remove this if neted inside the RecordSource in the grammar.
+  data: meta::pure::data::EmbeddedData[1];
+}
+
+
+
+//TODO how do we batch the tests?
+Class meta::pure::mastery::metamodel::test::MasterRecordTestBatch extends meta::pure::test::TestBatch
+{
+  test: meta::pure::mastery::metamodel::test::RecordSourceTest[1];
+}
+
 
 
