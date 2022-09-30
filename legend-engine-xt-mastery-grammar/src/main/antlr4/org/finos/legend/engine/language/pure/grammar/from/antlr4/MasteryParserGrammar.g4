@@ -54,6 +54,7 @@ mastery:                                    MASTER_RECORD_DEFINITION qualifiedNa
                                                     modelClass
                                                     | identityResolution
                                                     | recordSources
+                                                    | masterRecordTests
                                                 )*
                                                 BRACE_CLOSE
 ;
@@ -83,6 +84,7 @@ recordSource:                               masteryIdentifier COLON BRACE_OPEN
                                                 | createBlockedException
                                                 | tags
                                                 | sourcePartitions
+                                                | recordSourceTests
                                             )*
                                             BRACE_CLOSE
 ;
@@ -173,4 +175,17 @@ resolutionQueryKeyType:                  RESOLUTION_QUERY_KEY_TYPE COLON (
 ;
 resolutionQueryPrecedence:               RESOLUTION_QUERY_PRECEDENCE COLON INTEGER SEMI_COLON
 ;
+
+
+// -------------------------------------- TESTS --------------------------------------
+masterRecordTests:                      TESTS COLON BRACKET_OPEN ( masterRecordTest ( COMMA masterRecordTest )* )? BRACKET_CLOSE
+;
+masterRecordTest:                       MASTER_RECORD_TEST
+;
+
+recordSourceTests:                      TESTS COLON BRACKET_OPEN ( recordSourceTest ( COMMA recordSourceTest )* )? BRACKET_CLOSE
+;
+recordSourceTest:                       RECORD_SOURCE_TEST
+;
+
 
