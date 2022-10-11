@@ -140,7 +140,43 @@ public class TestMasteryCompilationFromGrammar extends TestCompilationFromGramma
             "          tags: [\'Equity\', \'Global\', \'Full-Universe\'];\n" +
             "        }\n" +
             "      ]\n" +
-            "      tests: [ recordSourceTest ]\n" +
+            "      tests:" +
+            "      [\n" +
+            "         widget_test_1_of_1: {\n " +
+            "            data:\n" +
+            "            {\n" +
+            "              ExternalFormat\n" +
+            "              #{\n" +
+            "                contentType: 'application/json';\n" +
+            "                data: '{\"Age\":12, \"Name\":\"Sally\"}';\n" +
+            "              }#\n" +
+            "            }\n" +
+            //TODO christian-gallagher - test other external data formats
+            "           asserts:\n" +
+            "           [\n" +
+            "             assert1:\n" +
+            "               EqualToJson\n" +
+            "               #{\n" +
+            "                 expected: \n" +
+            "                   ExternalFormat\n" +
+            "                   #{\n" +
+            "                     contentType: 'application/json';\n" +
+            "                     data: '{\"Age\":12, \"Name\":\"Sally\"}';\n" +
+            "                   }#;\n" +
+            "               }#,\n" +
+            "             assert2:\n" +
+            "               EqualToJson\n" +
+            "               #{\n" +
+            "                 expected: \n" +
+            "                   ExternalFormat\n" +
+            "                   #{\n" +
+            "                     contentType: 'application/json';\n" +
+            "                     data: '{\"Age\":22, \"Name\":\"Bob\"}';\n" +
+            "                   }#;\n" +
+            "               }#\n" +
+            "            ]\n" +
+            "         }\n" +
+            "      ]\n" +
             "    },\n" +
             "    widget-file-multiple-partition: {\n" +
             "      description: \'Multiple partition source.\';\n" +
@@ -166,7 +202,26 @@ public class TestMasteryCompilationFromGrammar extends TestCompilationFromGramma
             "      ]\n" +
             "    }\n" +
             "  ]\n" +
-            "  tests: [ masterRecordTest ]\n" +
+
+            "  tests:" +
+            "  [\n" +
+            "    widget_master_record_test: {\n " +
+            "       sourceTests: [ widget_test_src_1, widget_test_src_2 ]\n" +
+            "       asserts:\n" +
+            "       [\n" +
+            "         assert1:\n" +
+            "           EqualToJson\n" +
+            "           #{\n" +
+            "             expected: \n" +
+            "               ExternalFormat\n" +
+            "               #{\n" +
+            "                 contentType: 'application/json';\n" +
+            "                 data: '{\"Age\":12, \"Name\":\"Sally\"}';\n" +
+            "               }#;\n" +
+            "           }#\n" +
+            "       ]\n" +
+            "    }\n" +
+            "  ]\n" +
             "}\n";
 
     public static String MINIMUM_CORRECT_MASTERY_MODEL = "###Pure\n" +
