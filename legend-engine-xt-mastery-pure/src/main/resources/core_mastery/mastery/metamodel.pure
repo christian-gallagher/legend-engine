@@ -163,7 +163,7 @@ meta::pure::mastery::metamodel::test::MasterRecordTest extends meta::pure::test:
 Class {doc.doc='Test an individual RecordSource loading data.'}
 meta::pure::mastery::metamodel::test::RecordSourceTest extends meta::pure::test::AtomicTest
 {
-  recordSourceId: String[1]; //TODO remove this if neted inside the RecordSource in the grammar.
+  recordSource: meta::pure::mastery::metamodel::RecordSource[1]; //TODO remove this if neted inside the RecordSource in the grammar.
   data: meta::pure::data::EmbeddedData[1];
 }
 
