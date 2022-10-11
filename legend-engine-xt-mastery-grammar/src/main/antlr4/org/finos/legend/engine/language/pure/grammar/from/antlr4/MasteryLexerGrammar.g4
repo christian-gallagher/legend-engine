@@ -1,21 +1,20 @@
     lexer grammar MasteryLexerGrammar;
 
 import M3LexerGrammar;
-//import DomainLexerGrammar;
 
 // -------------------------------------- KEYWORD --------------------------------------
+
 
 // COMMON
 TRUE:                                       'true';
 FALSE:                                      'false';
 IMPORT:                                     'import';
 
+
 //**********
 // MASTERY
 //**********
 MASTER_RECORD_DEFINITION:                       'MasterRecordDefinition';
-MASTER_RECORD_TEST:                             'masterRecordTest';
-MASTER_RECORD_SOURCE_TESTS:                     'sourceTests';
 
 //RecordSource
 RECORD_SOURCES:                                 'recordSources';
@@ -31,8 +30,6 @@ RECORD_SOURCE_STATUS_TEST_ONLY:                 'TestOnly';
 RECORD_SOURCE_STATUS_PRODUCTION:                'Production';
 RECORD_SOURCE_STATUS_DORMANT:                   'Dormant';
 RECORD_SOURCE_STATUS_DECOMMINISSIONED:          'Decomissioned';
-RECORD_SOURCE_TEST:                             'recordSourceTest';
-
 
 //SourcePartiotions
 SOURCE_PARTITIONS:                              'partitions';
@@ -49,6 +46,10 @@ RESOLUTION_QUERY_KEY_TYPE_ALTERNATE_KEY:        'AlternateKey'; //AlternateKey (
 RESOLUTION_QUERY_KEY_TYPE_OPTIONAL:             'Optional';
 
 
+//Test
+MASTER_RECORD_SOURCE_TESTS:                     'sourceTests';
+
+
 //*************
 // COMMON
 //*************
@@ -57,5 +58,6 @@ MODEL_CLASS:                                    'modelClass';
 DESCRIPTION:                                    'description';
 TAGS:                                           'tags';
 TESTS:                                          'tests';
-TEST_DATA:                                      'data';
+DATA:                                           'data';
 TEST_ASSERTS:                                   'asserts';
+RECORD_SOURCE_ID:                               'recordSourceId';

@@ -7,12 +7,17 @@ options
     tokenVocab = MasteryLexerGrammar;
 }
 
+
 // -------------------------------------- IDENTIFIER --------------------------------------
 
-identifier:                                 VALID_STRING | STRING
+identifier:                                 VALID_STRING
+                                            | STRING
                                             | TRUE | FALSE
                                             | MASTER_RECORD_DEFINITION | MODEL_CLASS | RECORD_SOURCES | SOURCE_PARTITIONS
 ;
+
+masteryIdentifier:                          (VALID_STRING | '-' | INTEGER) (VALID_STRING | '-' | INTEGER)*;
+//masteryIdentifier:                        (Letter | Digit | '_' | '-') (Letter | Digit | '_' | '-' | '$')*;
 
 // -------------------------------------- DEFINITION --------------------------------------
 
@@ -70,10 +75,10 @@ recordSources:                              RECORD_SOURCES COLON
                                             )
                                             BRACKET_CLOSE
 ;
-recordSource:                               BRACE_OPEN
+recordSource:                               masteryIdentifier COLON BRACE_OPEN
                                             (
-                                                id
-                                                | recordStatus
+//                                                id
+                                                recordStatus
                                                 | description
                                                 | parseService
                                                 | transformService
@@ -120,10 +125,10 @@ sourcePartitions:                           SOURCE_PARTITIONS COLON
                                             )
                                             BRACKET_CLOSE
 ;
-sourcePartiton:                             BRACE_OPEN
+sourcePartiton:                             masteryIdentifier COLON BRACE_OPEN
                                             (
-                                                 id
-                                                 | tags
+//                                                 id
+                                                 tags
                                             )*
                                             BRACE_CLOSE
 ;
@@ -178,14 +183,49 @@ resolutionQueryPrecedence:               RESOLUTION_QUERY_PRECEDENCE COLON INTEG
 
 
 // -------------------------------------- TESTS --------------------------------------
+// MAstery Record Tests
 masterRecordTests:                      TESTS COLON BRACKET_OPEN ( masterRecordTest ( COMMA masterRecordTest )* )? BRACKET_CLOSE
 ;
-masterRecordTest:                       MASTER_RECORD_TEST
+masterRecordTest:                       masteryIdentifier COLON BRACE_OPEN
+                                        (
+                                             recordSourceTestReference
+                                             | testAssertions
+                                        )*
+                                        BRACE_CLOSE
 ;
+recordSourceTestReference:                MASTER_RECORD_SOURCE_TESTS COLON BRACKET_OPEN ( masteryIdentifier ( COMMA masteryIdentifier )* )? BRACKET_CLOSE
+;
+//recordSourceTestReference:              masteryIdentifier
+//;
 
+//Record Source Tests
 recordSourceTests:                      TESTS COLON BRACKET_OPEN ( recordSourceTest ( COMMA recordSourceTest )* )? BRACKET_CLOSE
 ;
-recordSourceTest:                       RECORD_SOURCE_TEST
+recordSourceTest:                       identifier COLON BRACE_OPEN
+                                        (
+                                              testData
+                                             | testAssertions
+                                        )*
+                                        BRACE_CLOSE
 ;
+//testId:                                 ID COLON STRING SEMI_COLON
+//;
+//recordSourceId:                         RECORD_SOURCE_ID COLON STRING SEMI_COLON
+//;
+testData:                               DATA COLON BRACE_OPEN embeddedData BRACE_CLOSE
+;
+embeddedData:                           identifier ISLAND_OPEN ( embeddedDataContent )*
+;
+embeddedDataContent:                    ISLAND_START | ISLAND_BRACE_OPEN | ISLAND_CONTENT | ISLAND_HASH | ISLAND_BRACE_CLOSE | ISLAND_END
+;
+testAssertions:                         TEST_ASSERTS COLON BRACKET_OPEN ( testAssert ( COMMA testAssert)* )? BRACKET_CLOSE
+;
+testAssert:                             identifier COLON testAssertion
+;
+testAssertion:                          identifier ISLAND_OPEN ( testAssertionContent )*
+;
+testAssertionContent:                   ISLAND_START | ISLAND_BRACE_OPEN | ISLAND_CONTENT | ISLAND_HASH | ISLAND_BRACE_CLOSE | ISLAND_END
+;
+
 
 

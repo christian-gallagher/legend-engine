@@ -124,8 +124,7 @@ public class TestMasteryCompilationFromGrammar extends TestCompilationFromGramma
             "  }\n" +
             "  recordSources:\n" +
             "  [\n" +
-            "    {\n" +
-            "      id: \'widget-file-single-partition\';\n" +
+            "    widget-file-single-partition-14: {\n" +
             "      description: \'Single partition source.\';\n" +
             "      status: Development;\n" +
             "      parseService: org::dataeng::ParseWidget;\n" +
@@ -137,15 +136,49 @@ public class TestMasteryCompilationFromGrammar extends TestCompilationFromGramma
             "      tags: [\'Refinitive DSP\'];\n" +
             "      partitions:\n" +
             "      [\n" +
-            "        {\n" +
-            "          id: \'partition-1\';\n" +
+            "        partition-1-of-5:{\n" +
             "          tags: [\'Equity\', \'Global\', \'Full-Universe\'];\n" +
             "        }\n" +
             "      ]\n" +
-            "      tests: [ recordSourceTest ]\n" +
+            "      tests:" +
+            "      [\n" +
+            "         widget_test_1_of_1: {\n " +
+            "            data:\n" +
+            "            {\n" +
+            "              ExternalFormat\n" +
+            "              #{\n" +
+            "                contentType: 'application/json';\n" +
+            "                data: '{\"Age\":12, \"Name\":\"Sally\"}';\n" +
+            "              }#\n" +
+            "            }\n" +
+            //TODO christian-gallagher - test other external data formats
+            "           asserts:\n" +
+            "           [\n" +
+            "             assert1:\n" +
+            "               EqualToJson\n" +
+            "               #{\n" +
+            "                 expected: \n" +
+            "                   ExternalFormat\n" +
+            "                   #{\n" +
+            "                     contentType: 'application/json';\n" +
+            "                     data: '{\"Age\":12, \"Name\":\"Sally\"}';\n" +
+            "                   }#;\n" +
+            "               }#,\n" +
+            "             assert2:\n" +
+            "               EqualToJson\n" +
+            "               #{\n" +
+            "                 expected: \n" +
+            "                   ExternalFormat\n" +
+            "                   #{\n" +
+            "                     contentType: 'application/json';\n" +
+            "                     data: '{\"Age\":22, \"Name\":\"Bob\"}';\n" +
+            "                   }#;\n" +
+            "               }#\n" +
+            "            ]\n" +
+            "         }\n" +
+            "      ]\n" +
             "    },\n" +
-            "    {\n" +
-            "      id: \'widget-file-multiple-partitions\';\n" +
+            "    widget-file-multiple-partition: {\n" +
             "      description: \'Multiple partition source.\';\n" +
             "      status: Production;\n" +
             "      parseService: org::dataeng::ParseWidget;\n" +
@@ -157,22 +190,38 @@ public class TestMasteryCompilationFromGrammar extends TestCompilationFromGramma
             "      tags: [\'Refinitive DSP Delta Files\'];\n" +
             "      partitions:\n" +
             "      [\n" +
-            "        {\n" +
-            "          id: \'ASIA-Equity\';\n" +
+            "        ASIA_Equity:{\n" +
             "          tags: [\'Equity\', \'ASIA\'];\n" +
             "        },\n" +
-            "        {\n" +
-            "          id: \'EMEA-Equity\';\n" +
+            "        EMEA_Equity:{\n" +
             "          tags: [\'Equity\', \'EMEA\'];\n" +
             "        },\n" +
-            "        {\n" +
-            "          id: \'US-Equity\';\n" +
+            "        US_Equity:{\n" +
             "          tags: [\'Equity\', \'US\'];\n" +
             "        }\n" +
             "      ]\n" +
             "    }\n" +
             "  ]\n" +
-            "  tests: [ masterRecordTest ]\n" +
+
+            "  tests:" +
+            "  [\n" +
+            "    widget_master_record_test: {\n " +
+            "       sourceTests: [ widget_test_src_1, widget_test_src_2 ]\n" +
+            "       asserts:\n" +
+            "       [\n" +
+            "         assert1:\n" +
+            "           EqualToJson\n" +
+            "           #{\n" +
+            "             expected: \n" +
+            "               ExternalFormat\n" +
+            "               #{\n" +
+            "                 contentType: 'application/json';\n" +
+            "                 data: '{\"Age\":12, \"Name\":\"Sally\"}';\n" +
+            "               }#;\n" +
+            "           }#\n" +
+            "       ]\n" +
+            "    }\n" +
+            "  ]\n" +
             "}\n";
 
     public static String MINIMUM_CORRECT_MASTERY_MODEL = "###Pure\n" +
@@ -213,15 +262,13 @@ public class TestMasteryCompilationFromGrammar extends TestCompilationFromGramma
             "  }\n" +
             "  recordSources:\n" +
             "  [\n" +
-            "    {\n" +
-            "      id: \'widget-file-single-partition\';\n" +
+            "    widget-file-single-partition:{\n" +
             "      description: \'Single partition source.\';\n" +
             "      status: Development;\n" +
             "      transformService: org::dataeng::TransformWidget;\n" +
             "      partitions:\n" +
             "      [\n" +
-            "        {\n" +
-            "          id: \'partition-1\';\n" +
+            "        partition-1a:{\n" +
             "        }\n" +
             "      ]\n" +
             "    }\n" +
@@ -252,8 +299,7 @@ public class TestMasteryCompilationFromGrammar extends TestCompilationFromGramma
             "  }\n" +
             "  recordSources:\n" +
             "  [\n" +
-            "    {\n" +
-            "      id: \'widget-file-single-partition\';\n" +
+            "    widget-file-single-partition: {\n" +
             "      description: \'Single partition source.\';\n" +
             "      status: Development;\n" +
             "      parseService: org::dataeng::ParseWidget;\n" +
@@ -265,8 +311,7 @@ public class TestMasteryCompilationFromGrammar extends TestCompilationFromGramma
             "      tags: [\'Refinitive DSP\'];\n" +
             "      partitions:\n" +
             "      [\n" +
-            "        {\n" +
-            "          id: \'partition-1\';\n" +
+            "        partition-1a: {\n" +
             "          tags: [\'Equity\'];\n" +
             "        }\n" +
             "      ]\n" +
