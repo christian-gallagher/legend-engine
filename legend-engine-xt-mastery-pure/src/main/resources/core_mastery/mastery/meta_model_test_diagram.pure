@@ -27,18 +27,6 @@ Diagram meta::pure::mastery::Mastery_Test_Diagram(width=0.0, height=0.0)
         color=#FFFFCC,
         lineWidth=1.0)
 
-    TypeView cview_7(
-        type=meta::pure::test::Testable,
-        position=(1626.38013, 454.52638),
-        width=87.64893,
-        height=44.00000,
-        stereotypesVisible=true,
-        attributesVisible=true,
-        attributeStereotypesVisible=true,
-        attributeTypesVisible=true,
-        color=#FFFFCC,
-        lineWidth=1.0)
-
     TypeView cview_9(
         type=meta::pure::test::Test,
         position=(1628.20069, 559.88160),
@@ -111,12 +99,11 @@ Diagram meta::pure::mastery::Mastery_Test_Diagram(width=0.0, height=0.0)
         color=#FFFFCC,
         lineWidth=1.0)
 
-
-    TypeView cview_15(
-        type=meta::pure::data::DataElementReference,
-        position=(2062.09838, 1112.38492),
-        width=150.72266,
-        height=30.00000,
+    TypeView cview_26(
+        type=meta::relational::metamodel::data::RelationalCSVData,
+        position=(1584.97005, 1110.07405),
+        width=175.05811,
+        height=44.00000,
         stereotypesVisible=true,
         attributesVisible=true,
         attributeStereotypesVisible=true,
@@ -124,11 +111,11 @@ Diagram meta::pure::mastery::Mastery_Test_Diagram(width=0.0, height=0.0)
         color=#FFFFCC,
         lineWidth=1.0)
 
-    TypeView cview_29(
-        type=meta::pure::mastery::metamodel::test::RecordSourceTest,
-        position=(1741.79303, 815.49608),
-        width=233.13477,
-        height=58.00000,
+    TypeView cview_15(
+        type=meta::pure::data::DataElementReference,
+        position=(2062.09838, 1112.38492),
+        width=150.72266,
+        height=30.00000,
         stereotypesVisible=true,
         attributesVisible=true,
         attributeStereotypesVisible=true,
@@ -172,6 +159,18 @@ Diagram meta::pure::mastery::Mastery_Test_Diagram(width=0.0, height=0.0)
         color=#FFFFCC,
         lineWidth=1.0)
 
+    TypeView cview_30(
+        type=meta::pure::mastery::metamodel::test::MasterRecordTestBatch,
+        position=(1451.79303, 949.99608),
+        width=157.15039,
+        height=30.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
     TypeView cview_1(
         type=meta::pure::mastery::metamodel::test::MasterRecordTest,
         position=(1411.64190, 808.50510),
@@ -184,11 +183,23 @@ Diagram meta::pure::mastery::Mastery_Test_Diagram(width=0.0, height=0.0)
         color=#FFFFCC,
         lineWidth=1.0)
 
-    TypeView cview_30(
-        type=meta::pure::mastery::metamodel::test::MasterRecordTestBatch,
-        position=(1451.79303, 949.99608),
-        width=157.15039,
-        height=30.00000,
+    TypeView cview_7(
+        type=meta::pure::test::Testable,
+        position=(1626.38013, 454.52638),
+        width=87.64893,
+        height=44.00000,
+        stereotypesVisible=true,
+        attributesVisible=true,
+        attributeStereotypesVisible=true,
+        attributeTypesVisible=true,
+        color=#FFFFCC,
+        lineWidth=1.0)
+
+    TypeView cview_29(
+        type=meta::pure::mastery::metamodel::test::RecordSourceTest,
+        position=(1740.75497, 816.53414),
+        width=233.13477,
+        height=58.00000,
         stereotypesVisible=true,
         attributesVisible=true,
         attributeStereotypesVisible=true,
@@ -268,6 +279,14 @@ Diagram meta::pure::mastery::Mastery_Test_Diagram(width=0.0, height=0.0)
         lineWidth=-1.0,
         lineStyle=SIMPLE)
 
+    GeneralizationView gview_8(
+        source=cview_26,
+        target=cview_14,
+        points=[(1672.49911,1132.07405),(1861.49367,970.68192)],
+        label='',
+        color=#000000,
+        lineWidth=-1.0,
+        lineStyle=SIMPLE)
 
     GeneralizationView gview_9(
         source=cview_27,
@@ -281,7 +300,7 @@ Diagram meta::pure::mastery::Mastery_Test_Diagram(width=0.0, height=0.0)
     GeneralizationView gview_10(
         source=cview_29,
         target=cview_6,
-        points=[(1858.36041,844.49608),(1671.04834,693.00000)],
+        points=[(1857.32235,845.53414),(1671.04834,693.00000)],
         label='',
         color=#000000,
         lineWidth=-1.0,
@@ -370,7 +389,7 @@ Diagram meta::pure::mastery::Mastery_Test_Diagram(width=0.0, height=0.0)
         property=meta::pure::mastery::metamodel::test::RecordSourceTest.data,
         source=cview_29,
         target=cview_14
-,        points=[(1858.36041,844.49608),(1861.49367,970.68192)],
+,        points=[(1857.32235,845.53414),(1861.49367,970.68192)],
         label='',
         propertyPosition=(0.0,0.0),
         multiplicityPosition=(0.0,0.0),
@@ -384,7 +403,7 @@ Diagram meta::pure::mastery::Mastery_Test_Diagram(width=0.0, height=0.0)
         property=meta::pure::mastery::metamodel::test::MasterRecordTestBatch.test,
         source=cview_30,
         target=cview_29
-,        points=[(1530.36823,964.99608),(1746.79303,965.99608),(1746.79303,866.99608)],
+,        points=[(1530.36823,964.99608),(1746.79303,965.99608),(1745.75497,868.03414)],
         label='',
         propertyPosition=(0.0,0.0),
         multiplicityPosition=(0.0,0.0),
