@@ -178,14 +178,49 @@ resolutionQueryPrecedence:               RESOLUTION_QUERY_PRECEDENCE COLON INTEG
 
 
 // -------------------------------------- TESTS --------------------------------------
+// MAstery Record Tests
 masterRecordTests:                      TESTS COLON BRACKET_OPEN ( masterRecordTest ( COMMA masterRecordTest )* )? BRACKET_CLOSE
 ;
-masterRecordTest:                       MASTER_RECORD_TEST
+masterRecordTest:                       masteryIdentifier COLON BRACE_OPEN
+                                        (
+                                             recordSourceTestReference
+                                             | testAssertions
+                                        )*
+                                        BRACE_CLOSE
 ;
+recordSourceTestReference:                MASTER_RECORD_SOURCE_TESTS COLON BRACKET_OPEN ( masteryIdentifier ( COMMA masteryIdentifier )* )? BRACKET_CLOSE
+;
+//recordSourceTestReference:              masteryIdentifier
+//;
 
+//Record Source Tests
 recordSourceTests:                      TESTS COLON BRACKET_OPEN ( recordSourceTest ( COMMA recordSourceTest )* )? BRACKET_CLOSE
 ;
-recordSourceTest:                       RECORD_SOURCE_TEST
+recordSourceTest:                       identifier COLON BRACE_OPEN
+                                        (
+                                              testData
+                                             | testAssertions
+                                        )*
+                                        BRACE_CLOSE
 ;
+//testId:                                 ID COLON STRING SEMI_COLON
+//;
+//recordSourceId:                         RECORD_SOURCE_ID COLON STRING SEMI_COLON
+//;
+testData:                               DATA COLON BRACE_OPEN embeddedData BRACE_CLOSE
+;
+embeddedData:                           identifier ISLAND_OPEN ( embeddedDataContent )*
+;
+embeddedDataContent:                    ISLAND_START | ISLAND_BRACE_OPEN | ISLAND_CONTENT | ISLAND_HASH | ISLAND_BRACE_CLOSE | ISLAND_END
+;
+testAssertions:                         TEST_ASSERTS COLON BRACKET_OPEN ( testAssert ( COMMA testAssert)* )? BRACKET_CLOSE
+;
+testAssert:                             identifier COLON testAssertion
+;
+testAssertion:                          identifier ISLAND_OPEN ( testAssertionContent )*
+;
+testAssertionContent:                   ISLAND_START | ISLAND_BRACE_OPEN | ISLAND_CONTENT | ISLAND_HASH | ISLAND_BRACE_CLOSE | ISLAND_END
+;
+
 
 
