@@ -32,7 +32,7 @@ import org.finos.legend.engine.protocol.pure.v1.model.data.ExternalFormatData;
 //import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.test.MasteryTest;
 //import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.test.MasteryTestBatch;
 //import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.test.TestData;
-import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.MasterRecordDefinition;
+//import org.finos.legend.engine.protocol.pure.v1.model.packageableElement.mastery.MasterRecordDefinition;
 import org.finos.legend.engine.protocol.pure.v1.model.test.AtomicTestId;
 import org.finos.legend.engine.protocol.pure.v1.model.test.assertion.TestAssertion;
 import org.finos.legend.engine.protocol.pure.v1.model.test.assertion.status.AssertFail;
