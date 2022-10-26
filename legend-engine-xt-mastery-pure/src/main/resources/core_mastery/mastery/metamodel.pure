@@ -73,7 +73,7 @@ meta::pure::mastery::metamodel::RecordSourcePartition
   id: String[1];
 
   {doc.doc='A collection of tags used to label the partition, typically used to classify the data loaded e.g. an asset class, region, etc...'}
-  tags: String[*]; 
+  tags: String[*];
 }
 
 Enum {doc.doc = 'Release status used to apply controls on models and configuration to preserve lineage and provenance.'}
@@ -230,5 +230,3 @@ Class meta::pure::mastery::metamodel::connection::HttpFileConnection_TODO extend
 
 Class meta::pure::mastery::metamodel::connection::FtpFileConnection_TODO extends meta::pure::mastery::metamodel::connection::FileConnection
 {
-
-}
