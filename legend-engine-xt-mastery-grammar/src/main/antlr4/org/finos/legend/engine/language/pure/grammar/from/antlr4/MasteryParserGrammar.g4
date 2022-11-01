@@ -173,4 +173,3 @@ resolutionQueryKeyType:                  RESOLUTION_QUERY_KEY_TYPE COLON (
 ;
 resolutionQueryPrecedence:               RESOLUTION_QUERY_PRECEDENCE COLON INTEGER SEMI_COLON
 ;
-
