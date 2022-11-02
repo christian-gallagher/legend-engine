@@ -188,7 +188,7 @@ masterRecordTest:                       masteryIdentifier COLON BRACE_OPEN
                                         )*
                                         BRACE_CLOSE
 ;
-recordSourceTestReference:                MASTER_RECORD_SOURCE_TESTS COLON BRACKET_OPEN ( masteryIdentifier ( COMMA masteryIdentifier )* )? BRACKET_CLOSE
+recordSourceTestReference:             MASTER_RECORD_SOURCE_TESTS COLON BRACKET_OPEN ( masteryIdentifier ( COMMA masteryIdentifier )* )? BRACKET_CLOSE
 ;
 //recordSourceTestReference:              masteryIdentifier
 //;
@@ -196,7 +196,7 @@ recordSourceTestReference:                MASTER_RECORD_SOURCE_TESTS COLON BRACK
 //Record Source Tests
 recordSourceTests:                      TESTS COLON BRACKET_OPEN ( recordSourceTest ( COMMA recordSourceTest )* )? BRACKET_CLOSE
 ;
-recordSourceTest:                       identifier COLON BRACE_OPEN
+recordSourceTest:                       masteryIdentifier COLON BRACE_OPEN
                                         (
                                               testData
                                              | testAssertions
