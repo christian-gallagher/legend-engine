@@ -9,7 +9,8 @@ options
 
 // -------------------------------------- IDENTIFIER --------------------------------------
 
-identifier:                                 VALID_STRING | STRING
+identifier:                                 VALID_STRING
+                                            | STRING
                                             | TRUE | FALSE
                                             | MASTER_RECORD_DEFINITION | MODEL_CLASS | RECORD_SOURCES | SOURCE_PARTITIONS
 ;
@@ -74,6 +75,7 @@ recordSources:                              RECORD_SOURCES COLON
 ;
 recordSource:                               masteryIdentifier COLON BRACE_OPEN
                                             (
+//                                                id
                                                 recordStatus
                                                 | description
                                                 | parseService
@@ -84,7 +86,6 @@ recordSource:                               masteryIdentifier COLON BRACE_OPEN
                                                 | createBlockedException
                                                 | tags
                                                 | sourcePartitions
-                                                | recordSourceTests
                                             )*
                                             BRACE_CLOSE
 ;
@@ -123,6 +124,7 @@ sourcePartitions:                           SOURCE_PARTITIONS COLON
 ;
 sourcePartiton:                             masteryIdentifier COLON BRACE_OPEN
                                             (
+//                                                 id
                                                  tags
                                             )*
                                             BRACE_CLOSE
@@ -188,7 +190,7 @@ masterRecordTest:                       masteryIdentifier COLON BRACE_OPEN
                                         )*
                                         BRACE_CLOSE
 ;
-recordSourceTestReference:             MASTER_RECORD_SOURCE_TESTS COLON BRACKET_OPEN ( masteryIdentifier ( COMMA masteryIdentifier )* )? BRACKET_CLOSE
+recordSourceTestReference:                MASTER_RECORD_SOURCE_TESTS COLON BRACKET_OPEN ( masteryIdentifier ( COMMA masteryIdentifier )* )? BRACKET_CLOSE
 ;
 //recordSourceTestReference:              masteryIdentifier
 //;
